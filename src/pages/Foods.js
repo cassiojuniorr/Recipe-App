@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
 // import propTypes from 'prop-types';
 
-class Home extends React.Component {
+class Foods extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -12,21 +13,21 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        Home
+        <Header title="Foods" />
       </div>
     );
   }
 }
 
-// Home.propTypes = {
+// Foods.propTypes = {
 //   history: propTypes.shape({
 //     push: propTypes.func,
 //   }).isRequired,
 //   userLoginDispatch: propTypes.func.isRequired,
 // };
 
-const mapDispatchToProps = (dispatch) => ({
-  userLoginDispatch: (email, password) => dispatch(userLogin(email, password)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   userLoginDispatch: (email, password) => dispatch(userLogin(email, password)),
+// });
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(null, null)(Foods);
