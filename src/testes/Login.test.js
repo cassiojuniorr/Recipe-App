@@ -14,7 +14,7 @@ import App from '../App';
 
 describe('Testando o componente <Login />', () => {
   it('Testando o formulario de login', async () => {
-    // global.fetch = jest.fn().mockResolvedValue({
+    /// global.fetch = jest.fn().mockResolvedValue({
     //   json: jest.fn().mockResolvedValue(token),
     // });
     const { history } = renderWithRouterAndRedux(<App />);
@@ -37,14 +37,4 @@ describe('Testando o componente <Login />', () => {
 
     expect(history.location.pathname).toBe('/foods');
   });
-//   it('Testando o botão de Settings da pagina de login', () => {
-//     const { history } = renderWithRouterAndRedux(<App />);
-//     expect(history.location.pathname).toBe('/');
-
-//     const buttonSettings = screen.getByRole('button', { name: 'Settings' });
-//     expect(buttonSettings).toBeInTheDocument();
-//     userEvent.click(buttonSettings);
-
-//     expect(history.location.pathname).toBe('/config');
-//   });
 });
