@@ -12,7 +12,7 @@ describe('Test component Header', () => {
     const imgProfile = screen.getByTestId('profile-top-btn');
     const imgSearch = screen.getByTestId('search-top-btn');
 
-    expect(screen.getByTestId('page-title')).toBeDefined();
+    expect(screen.getByTestId('page-title')).toHaveTextContent(/foods/i);
     expect(imgProfile).toBeDefined();
     expect(imgSearch).toBeDefined();
   });
@@ -23,8 +23,6 @@ describe('Test component Header', () => {
 
     const imgProfile = screen.getByTestId('profile-top-btn');
     const imgSearch = screen.getByTestId('search-top-btn');
-
-    expect(screen.getByTestId('page-title')).toHaveTextContent(/foods/i);
 
     userEvent.click(imgSearch);
 
