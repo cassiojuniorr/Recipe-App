@@ -39,7 +39,7 @@ class Header extends React.Component {
               alt="searchIcon"
               onClick={ this.toggleSearchInput }
             />
-            { searchActivated && <SearchBar /> }
+            { searchActivated && <SearchBar pageActual={ title } /> }
           </div>
         ) }
       </div>

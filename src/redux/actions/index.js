@@ -4,12 +4,14 @@ export const userLogin = (email) => (
   { type: actionTypes.USER_LOGIN, email }
 );
 
-// asdasd
-
-export const addScore = (score) => (
-  { type: actionTypes.ADD_SCORE, score }
+export const accRequestRecipe = () => (
+  { type: actionTypes.REQUEST_API }
 );
 
-// export const addAssertions = () => ({
-//   type: actionTypes.ADD_ASSERTIONS,
-// });
+export const accAddRecipe = (recipe) => (
+  { type: actionTypes.ADD_RECIPE, recipe }
+);
+
+export const accFailRecipe = (error) => (
+  { type: actionTypes.FAIL_API, error }
+);

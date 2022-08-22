@@ -1,9 +1,7 @@
 export const USER_LOGIN = 'USER_LOGIN';
 
-export const ADD_SCORE = 'ADD_SCORE';
+export const REQUEST_API = 'REQUEST_API';
 
-// export const ADD_ASSERTIONS = 'ADD_ASSERTIONS';
+export const ADD_RECIPE = 'ADD_RECIPE';
 
-// export const correto = 'correct-option';
-
-// export const errado = 'wrong-options';
+export const FAIL_API = 'FAIL_API';
