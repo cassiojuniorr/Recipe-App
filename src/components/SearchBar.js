@@ -34,6 +34,13 @@ function SearchBar({ makeSearch, pageActual }) {
     makeSearch(endpoint);
   };
 
+  const setChanges = ({ target }) => {
+    setType({
+      ...typeState,
+      type: target.value,
+    });
+  };
+
   const { inputSearch } = state;
   const { type } = typeState;
   return (
@@ -53,10 +60,7 @@ function SearchBar({ makeSearch, pageActual }) {
             data-testid="ingredient-search-radio"
             id="ingredient-search-radio"
             value="ingredient"
-            onChange={ ({ target }) => setType({
-              ...typeState,
-              type: target.value,
-            }) }
+            onChange={ setChanges }
           />
         </label>
 
@@ -67,10 +71,7 @@ function SearchBar({ makeSearch, pageActual }) {
             data-testid="name-search-radio"
             id="name-search-radio"
             value="name"
-            onChange={ ({ target }) => setType({
-              ...typeState,
-              type: target.value,
-            }) }
+            onChange={ setChanges }
           />
         </label>
 
@@ -81,10 +82,7 @@ function SearchBar({ makeSearch, pageActual }) {
             data-testid="first-letter-search-radio"
             id="first-letter-search-radio"
             value="firstLetter"
-            onChange={ ({ target }) => setType({
-              ...typeState,
-              type: target.value,
-            }) }
+            onChange={ setChanges }
           />
         </label>
 
