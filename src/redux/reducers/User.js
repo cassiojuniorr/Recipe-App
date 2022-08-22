@@ -11,16 +11,6 @@ const user = (state = INITIAL_STATE, action) => {
       ...state,
       email: action.email,
     });
-  // case actionTypes.ADD_SCORE:
-  //   return ({
-  //     ...state,
-  //     score: state.score + action.score,
-  //   });
-  // case actionTypes.ADD_ASSERTIONS:
-  //   return ({
-  //     ...state,
-  //     assertions: state.assertions + 1,
-  //   });
   default:
     return state;
   }

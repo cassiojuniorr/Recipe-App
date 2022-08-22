@@ -7,38 +7,37 @@ import App from '../App';
 describe('Test SearchBarRadios', () => {
   afterEach(() => jest.resetAllMocks());
 
-  it('Test Name', async () => {
+  it('Test Fist Letter Radio', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
-    const endpoint = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=gin';
+    const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a';
 
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: jest.fn().mockResolvedValue(endpoint),
     });
 
-    history.push('/foods');
+    history.push('/drinks');
 
     const imgSearch = screen.getByTestId('search-top-btn');
 
     userEvent.click(imgSearch);
 
     const inputSearch = screen.getByTestId('search-input');
-    const nameRadio = screen.getByTestId('ingredient-search-radio');
+    const firsLettertRadio = screen.getByTestId('first-letter-search-radio');
 
-    userEvent.type(inputSearch, 'gin');
-    userEvent.click(nameRadio);
+    userEvent.type(inputSearch, 'a');
+    userEvent.click(firsLettertRadio);
     userEvent.click(screen.getByTestId('exec-search-btn'));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(endpoint));
   });
-
-  it('Test Alert Fist Letter', async () => {
+  it('Test Ingredient Radio', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
-    const endpoint = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=a';
+    const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=gin';
 
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: jest.fn().mockResolvedValue(endpoint),
     });
 
-    history.push('/foods');
+    history.push('/drinks');
 
     const imgSearch = screen.getByTestId('search-top-btn');
 
@@ -47,7 +46,7 @@ describe('Test SearchBarRadios', () => {
     const inputSearch = screen.getByTestId('search-input');
     const ingredientRadio = screen.getByTestId('ingredient-search-radio');
 
-    userEvent.type(inputSearch, 'a');
+    userEvent.type(inputSearch, 'gin');
     userEvent.click(ingredientRadio);
     userEvent.click(screen.getByTestId('exec-search-btn'));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(endpoint));

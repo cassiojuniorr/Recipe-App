@@ -30,8 +30,12 @@ function SearchBar({ makeSearch, pageActual }) {
     const { inputSearch } = state;
     const { type } = typeState;
     const { page } = pageState;
-    const endpoint = ENDPOINST[page][type].concat(inputSearch);
-    makeSearch(endpoint);
+    if (type === 'firstLetter' && inputSearch.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    } else {
+      const endpoint = ENDPOINST[page][type].concat(inputSearch);
+      makeSearch(endpoint);
+    }
   };
 
   const setChanges = ({ target }) => {
@@ -43,6 +47,7 @@ function SearchBar({ makeSearch, pageActual }) {
 
   const { inputSearch } = state;
   const { type } = typeState;
+
   return (
     <div>
       <form>
@@ -89,12 +94,13 @@ function SearchBar({ makeSearch, pageActual }) {
         <button
           type="button"
           data-testid="exec-search-btn"
-          onClick={ () => makeFetchApi() }
+          disabled={ type.length === 0 || inputSearch.length === 0 }
+          onClick={ makeFetchApi }
         >
           SEARCH
         </button>
-        { (type === 'firstLetter' && inputSearch.length > 1)
-        && global.alert('Your search must have only 1 (one) character')}
+        {/* { (type === 'firstLetter' && inputSearch.length === 2)
+        && global.alert('Your search must have only 1 (one) character')} */}
       </form>
     </div>
   );

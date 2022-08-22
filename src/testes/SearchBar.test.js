@@ -7,24 +7,9 @@ import App from '../App';
 describe('Test SearchBar', () => {
   afterEach(() => jest.resetAllMocks());
 
-  it('Renderiza o componente', () => {
+  it('Test Name Radio', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
-    history.push('/foods');
-
-    const imgSearch = screen.getByTestId('search-top-btn');
-
-    userEvent.click(imgSearch);
-
-    expect(screen.getByTestId('search-input')).toBeDefined();
-    expect(screen.getByTestId('ingredient-search-radio')).toBeDefined();
-    expect(screen.getByTestId('name-search-radio')).toBeDefined();
-    expect(screen.getByTestId('first-letter-search-radio')).toBeDefined();
-    expect(screen.getByTestId('exec-search-btn')).toBeDefined();
-  });
-
-  it('Test Ingredient', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-    const endpoint = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=chiken';
+    const endpoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=chiken';
 
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: jest.fn().mockResolvedValue(endpoint),
@@ -37,11 +22,27 @@ describe('Test SearchBar', () => {
     userEvent.click(imgSearch);
 
     const inputSearch = screen.getByTestId('search-input');
-    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    const nameRadio = screen.getByTestId('name-search-radio');
 
     userEvent.type(inputSearch, 'chiken');
-    userEvent.click(ingredientRadio);
+    userEvent.click(nameRadio);
     userEvent.click(screen.getByTestId('exec-search-btn'));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(endpoint));
+  });
+  it('Test Alert Fist Letter', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    history.push('/foods');
+
+    const imgSearch = screen.getByTestId('search-top-btn');
+
+    userEvent.click(imgSearch);
+
+    const inputSearch = screen.getByTestId('search-input');
+    const firsLettertRadio = screen.getByTestId('first-letter-search-radio');
+
+    userEvent.type(inputSearch, 'asasdas');
+    userEvent.click(firsLettertRadio);
+    userEvent.click(screen.getByTestId('exec-search-btn'));
   });
 });
