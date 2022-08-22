@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 class Header extends React.Component {
   constructor() {
@@ -38,7 +39,7 @@ class Header extends React.Component {
               alt="searchIcon"
               onClick={ this.toggleSearchInput }
             />
-            { searchActivated && <input type="text" data-testid="search-input" /> }
+            { searchActivated && <SearchBar pageActual={ title } /> }
           </div>
         ) }
       </div>
