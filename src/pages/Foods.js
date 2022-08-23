@@ -28,7 +28,7 @@ class Foods extends React.Component {
 }
 
 Foods.propTypes = {
-  meals: propTypes.arrayOf(propTypes.object).isRequired,
+  meals: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
   makeSearchMeals: propTypes.func.isRequired,
 };
 

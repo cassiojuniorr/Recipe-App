@@ -36,8 +36,8 @@ const mapStateToProps = (state) => ({
 });
 
 RecipeCards.propTypes = {
-  meals: propTypes.arrayOf(propTypes.object).isRequired,
-  drinks: propTypes.arrayOf(propTypes.object).isRequired,
+  meals: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
+  drinks: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
 };
 
 export default connect(mapStateToProps)(RecipeCards);
