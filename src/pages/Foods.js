@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import propTypes from 'prop-types';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 class Foods extends React.Component {
   render() {
@@ -26,6 +27,7 @@ class Foods extends React.Component {
             </div>
           );
         }) }
+        <Footer />
       </div>
     );
   }
