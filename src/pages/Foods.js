@@ -41,8 +41,4 @@ const mapStateToProps = (store) => ({
   meals: store.recipeReducer.meals,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   userLoginDispatch: (email, password) => dispatch(userLogin(email, password)),
-// });
-
 export default connect(mapStateToProps, null)(Foods);

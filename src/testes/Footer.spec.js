@@ -8,10 +8,19 @@ describe('Test Footer', () => {
   it('Renderiza na Tela', () => {
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('/foods');
-    expect(screen.getAllByTestId('drinks-bottom-btn')).toBeDefined();
-    expect(screen.getAllByTestId('food-bottom-btn')).toBeDefined();
+    expect(screen.getByTestId('drinks-bottom-btn')).toBeDefined();
+    expect(screen.getByTestId('food-bottom-btn')).toBeDefined();
   });
-  it('', () => {});
-  it('', () => {});
-  it('', () => {});
+  it('Usando os links', () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+    history.push('/foods');
+
+    const linkDrinks = screen.getByTestId('drinks-bottom-btn');
+    userEvent.click(linkDrinks);
+    expect(history.location.pathname).toBe('/drinks');
+
+    const linkFood = screen.getByTestId('food-bottom-btn');
+    userEvent.click(linkFood);
+    expect(history.location.pathname).toBe('/foods');
+  });
 });

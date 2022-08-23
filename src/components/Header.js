@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import profileIcon from '../images/profileIcon.svg';
+import searchIcon from '../images/searchIcon.svg';
 
 class Header extends React.Component {
   constructor() {
@@ -24,18 +26,18 @@ class Header extends React.Component {
       <div>
         <h2 data-testid="page-title">{title}</h2>
         <Link to="/profile">
-          <svg
+          <img
             data-testid="profile-top-btn"
-            src="../images/profileIcon.svg"
+            src={ profileIcon }
             alt="profileIcon"
           />
         </Link>
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
           <div>
-            <svg
+            <img
               data-testid="search-top-btn"
-              src="../images/searchIcon.svg"
+              src={ searchIcon }
               alt="searchIcon"
               onClick={ this.toggleSearchInput }
             />
