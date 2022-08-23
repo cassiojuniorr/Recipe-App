@@ -1,16 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import propTypes from 'prop-types';
 import Header from '../components/Header';
-// import propTypes from 'prop-types';
 
 class Foods extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
-
   render() {
+    const { meals } = this.props;
+    if (meals.length === 1) return <Redirect to={ `/foods/${meals[0].idMeal}` } />;
     return (
       <div>
         <Header title="Foods" />
@@ -19,15 +16,19 @@ class Foods extends React.Component {
   }
 }
 
-// Foods.propTypes = {
-//   history: propTypes.shape({
-//     push: propTypes.func,
-//   }).isRequired,
-//   userLoginDispatch: propTypes.func.isRequired,
-// };
+Foods.propTypes = {
+  meals: propTypes.shape({
+    length: propTypes.func,
+    idMeal: propTypes.string,
+  }).isRequired,
+};
+
+const mapStateToProps = (store) => ({
+  meals: store.recipeReducer.meals,
+});
 
 // const mapDispatchToProps = (dispatch) => ({
 //   userLoginDispatch: (email, password) => dispatch(userLogin(email, password)),
 // });
 
-export default connect(null, null)(Foods);
+export default connect(mapStateToProps, null)(Foods);
