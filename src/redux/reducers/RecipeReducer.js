@@ -12,6 +12,8 @@ const INITIAL_STATE = {
   error: '',
 };
 
+const RECIPE_LIMIT = 11;
+
 const recipeReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case REQUEST_API:
@@ -23,7 +25,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       load: false,
-      meals: [...action.meals.meals],
+      meals: [...action.meals.meals].filter((meal, index) => index <= RECIPE_LIMIT),
       drinks: [],
     });
   case ADD_RECIPE_DRINKS:
@@ -31,7 +33,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
       ...state,
       load: false,
       meals: [],
-      drinks: [...action.drinks.drinks],
+      drinks: [...action.drinks.drinks].filter((drink, index) => index <= RECIPE_LIMIT),
     });
   case FAIL_API:
     return ({

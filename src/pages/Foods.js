@@ -11,16 +11,28 @@ class Foods extends React.Component {
     return (
       <div>
         <Header title="Foods" />
+        { meals.map((meal, index) => {
+          const { strMeal, strMealThumb } = meal;
+          return (
+            <div data-testid={ `${index}-recipe-card` } key={ index }>
+              <h3 data-testid={ `${index}-card-name` }>{strMeal}</h3>
+              <img
+                src={ strMealThumb }
+                alt={ strMeal }
+                data-testid={ `${index}-card-img` }
+                width="200"
+                height="200"
+              />
+            </div>
+          );
+        }) }
       </div>
     );
   }
 }
 
 Foods.propTypes = {
-  meals: propTypes.shape({
-    length: propTypes.func,
-    idMeal: propTypes.string,
-  }).isRequired,
+  meals: propTypes.arrayOf(propTypes.object).isRequired,
 };
 
 const mapStateToProps = (store) => ({
