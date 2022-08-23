@@ -7,6 +7,7 @@ class RecipeCards extends React.Component {
     const { drinks, meals } = this.props;
     const isDrink = drinks.length > 0;
     const recipesList = isDrink ? drinks : meals;
+    console.log(recipesList);
     return (
       <div>
         { recipesList.map((recipe, index) => {

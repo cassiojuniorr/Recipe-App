@@ -26,7 +26,6 @@ class Header extends React.Component {
     const { containerHeader, links } = style;
     return (
       <div className={ containerHeader }>
-        <h2 data-testid="page-title">{title}</h2>
         <Link to="/profile">
           <img
             data-testid="profile-top-btn"
@@ -35,10 +34,12 @@ class Header extends React.Component {
             className={ links }
           />
         </Link>
+        <h2 data-testid="page-title">{title}</h2>
+
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
           <div>
-            <svg
+            <img
               data-testid="search-top-btn"
               src={ searchIcon }
               alt="searchIcon"
