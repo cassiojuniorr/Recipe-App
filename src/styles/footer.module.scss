@@ -1,3 +1,4 @@
+@use 'variables' as *;
 @use 'mixins' as *;
 
 .containerFooter {
@@ -5,5 +6,10 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: rgb(0, 95, 0);
+    height: 50px;
+    justify-content: space-around;
+    background-color: rgb(0, 143, 43);
+    .links:hover {
+        opacity: 1;
+    }
 }

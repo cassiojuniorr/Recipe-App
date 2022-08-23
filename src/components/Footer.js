@@ -5,7 +5,7 @@ import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
 
 function Footer() {
-  const { containerFooter } = style;
+  const { containerFooter, links } = style;
   return (
     <footer data-testid="footer" className={ containerFooter }>
       <Link to="/drinks">
@@ -13,6 +13,7 @@ function Footer() {
           src={ drinkIcon }
           alt="drink icon"
           data-testid="drinks-bottom-btn"
+          className={ links }
         />
       </Link>
 
@@ -21,6 +22,7 @@ function Footer() {
           src={ mealIcon }
           alt="meal icon"
           data-testid="food-bottom-btn"
+          className={ links }
         />
       </Link>
     </footer>

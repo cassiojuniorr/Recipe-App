@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
+import style from '../styles/header.module.scss';
 
 function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
   const [state, setState] = useState({ inputSearch: '' });
@@ -50,55 +51,66 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
 
   const { inputSearch } = state;
   const { type } = typeState;
+  const {
+    searchInput,
+    containerSearch,
+    containerRadiosSearch,
+    btnSearch } = style;
 
   return (
     <div>
-      <form>
+      <form className={ containerSearch }>
         <input
           type="text"
           data-testid="search-input"
+          className={ searchInput }
           value={ inputSearch }
           onChange={ ({ target }) => setState({ ...state, inputSearch: target.value }) }
         />
 
-        <label htmlFor="ingredient-search-radio">
-          Ingredient
-          <input
-            type="radio"
-            data-testid="ingredient-search-radio"
-            id="ingredient-search-radio"
-            value="ingredient"
-            onChange={ setChanges }
-          />
-        </label>
+        <div className={ containerRadiosSearch }>
 
-        <label htmlFor="name-search-radio">
-          Name
-          <input
-            type="radio"
-            data-testid="name-search-radio"
-            id="name-search-radio"
-            value="name"
-            onChange={ setChanges }
-          />
-        </label>
+          <label htmlFor="ingredient-search-radio">
+            Ingredient
+            <input
+              type="radio"
+              data-testid="ingredient-search-radio"
+              id="ingredient-search-radio"
+              value="ingredient"
+              onChange={ setChanges }
+            />
+          </label>
 
-        <label htmlFor="first-letter-search-radio">
-          First Letter
-          <input
-            type="radio"
-            data-testid="first-letter-search-radio"
-            id="first-letter-search-radio"
-            value="firstLetter"
-            onChange={ setChanges }
-          />
-        </label>
+          <label htmlFor="name-search-radio">
+            Name
+            <input
+              type="radio"
+              data-testid="name-search-radio"
+              id="name-search-radio"
+              value="name"
+              onChange={ setChanges }
+
+            />
+          </label>
+
+          <label htmlFor="first-letter-search-radio">
+            First Letter
+            <input
+              type="radio"
+              data-testid="first-letter-search-radio"
+              id="first-letter-search-radio"
+              value="firstLetter"
+              onChange={ setChanges }
+            />
+          </label>
+        </div>
 
         <button
           type="button"
           data-testid="exec-search-btn"
           disabled={ type.length === 0 || inputSearch.length === 0 }
           onClick={ makeFetchApi }
+          className={ btnSearch }
         >
           SEARCH
         </button>

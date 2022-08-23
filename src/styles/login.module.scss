@@ -1,0 +1,33 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.containerLogin {
+    @include center;
+    flex-flow: column nowrap;
+    justify-content: center;
+    color: $text-color;
+    font-size: 16px;
+    text-align: center;
+    .inputsContainerLogin {
+        @include center;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+        .inputsLogin {
+            width: 40%;
+            font-family: inherit;
+            letter-spacing: inherit;
+            border: 0px;
+            box-sizing: content-box;
+            height: 1.4375em;
+            padding: 6px;
+            background-color: $text-color;
+            border-radius: 8px;
+        }
+        margin-bottom: 5px;
+    }
+    .btnLogin {
+        border: 1px solid $text-color;
+        color: $brackGround;
+        padding: 2px 16px;
+    }
+}
