@@ -115,6 +115,7 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
           SEARCH
         </button>
       </form>
+      {/* sds */}
     </div>
   );
 }
