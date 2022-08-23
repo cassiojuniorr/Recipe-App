@@ -1,32 +1,46 @@
 import {
   REQUEST_API,
-  ADD_RECIPE,
+  ADD_RECIPE_MEALS,
+  ADD_RECIPE_DRINKS,
   FAIL_API,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   load: false,
-  recipe: [],
+  meals: [],
+  drinks: [],
   error: '',
 };
 
-const RecipeReducer = (state = INITIAL_STATE, action) => {
+const RECIPE_LIMIT = 11;
+
+const recipeReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case REQUEST_API:
     return ({
       ...state,
       load: true,
     });
-  case ADD_RECIPE:
+  case ADD_RECIPE_MEALS:
     return ({
       ...state,
       load: false,
-      recipe: action.recipe,
+      meals: [...action.meals.meals].filter((meal, index) => index <= RECIPE_LIMIT),
+      drinks: [],
+    });
+  case ADD_RECIPE_DRINKS:
+    return ({
+      ...state,
+      load: false,
+      meals: [],
+      drinks: [...action.drinks.drinks].filter((drink, index) => index <= RECIPE_LIMIT),
     });
   case FAIL_API:
     return ({
       ...state,
       load: false,
+      meals: [],
+      drinks: [],
       error: action.error,
     });
 
@@ -35,4 +49,4 @@ const RecipeReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default RecipeReducer;
+export default recipeReducer;

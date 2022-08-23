@@ -8,8 +8,12 @@ export const accRequestRecipe = () => (
   { type: actionTypes.REQUEST_API }
 );
 
-export const accAddRecipe = (recipe) => (
-  { type: actionTypes.ADD_RECIPE, recipe }
+export const accAddRecipeMeals = (meals) => (
+  { type: actionTypes.ADD_RECIPE_MEALS, meals }
+);
+
+export const accAddRecipeDrinks = (drinks) => (
+  { type: actionTypes.ADD_RECIPE_DRINKS, drinks }
 );
 
 export const accFailRecipe = (error) => (

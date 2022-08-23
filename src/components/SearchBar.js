@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import fetchRecipe from '../services/fetchApi';
+import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
 
-function SearchBar({ makeSearch, pageActual }) {
+function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
   const [state, setState] = useState({ inputSearch: '' });
   const [typeState, setType] = useState({ type: '' });
   const [pageState, setPage] = useState({ page: '' });
@@ -30,8 +30,15 @@ function SearchBar({ makeSearch, pageActual }) {
     const { inputSearch } = state;
     const { type } = typeState;
     const { page } = pageState;
-    const endpoint = ENDPOINST[page][type].concat(inputSearch);
-    makeSearch(endpoint);
+    if (type === 'firstLetter' && inputSearch.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    } else if (page === 'foods') {
+      const endpoint = ENDPOINST.foods[type].concat(inputSearch);
+      makeSearchMeals(endpoint);
+    } else {
+      const endpoint = ENDPOINST.drinks[type].concat(inputSearch);
+      makeSearchDrinks(endpoint);
+    }
   };
 
   const setChanges = ({ target }) => {
@@ -43,6 +50,7 @@ function SearchBar({ makeSearch, pageActual }) {
 
   const { inputSearch } = state;
   const { type } = typeState;
+
   return (
     <div>
       <form>
@@ -89,24 +97,25 @@ function SearchBar({ makeSearch, pageActual }) {
         <button
           type="button"
           data-testid="exec-search-btn"
-          onClick={ () => makeFetchApi() }
+          disabled={ type.length === 0 || inputSearch.length === 0 }
+          onClick={ makeFetchApi }
         >
           SEARCH
         </button>
-        { (type === 'firstLetter' && inputSearch.length > 1)
-        && global.alert('Your search must have only 1 (one) character')}
       </form>
     </div>
   );
 }
 
 SearchBar.propTypes = {
-  makeSearch: PropTypes.func.isRequired,
+  makeSearchMeals: PropTypes.func.isRequired,
+  makeSearchDrinks: PropTypes.func.isRequired,
   pageActual: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  makeSearch: (endpoint) => dispatch(fetchRecipe(endpoint)),
+  makeSearchMeals: (endpoint) => dispatch(fetchRecipeMeals(endpoint)),
+  makeSearchDrinks: (endpoint) => dispatch(fetchRecipeDrinks(endpoint)),
 });
 
 export default connect(null, mapDispatchToProps)(SearchBar);
