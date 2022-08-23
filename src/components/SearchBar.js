@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
-import style from '../styles/header.module.scss';
 
 function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
   const [state, setState] = useState({ inputSearch: '' });
@@ -51,24 +50,18 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
 
   const { inputSearch } = state;
   const { type } = typeState;
-  const {
-    searchInput,
-    containerSearch,
-    containerRadiosSearch,
-    btnSearch } = style;
 
   return (
     <div>
-      <form className={ containerSearch }>
+      <form>
         <input
           type="text"
           data-testid="search-input"
-          className={ searchInput }
           value={ inputSearch }
           onChange={ ({ target }) => setState({ ...state, inputSearch: target.value }) }
         />
 
-        <div className={ containerRadiosSearch }>
+        <div>
 
           <label htmlFor="ingredient-search-radio">
             Ingredient
@@ -110,12 +103,10 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
           data-testid="exec-search-btn"
           disabled={ type.length === 0 || inputSearch.length === 0 }
           onClick={ makeFetchApi }
-          className={ btnSearch }
         >
           SEARCH
         </button>
       </form>
-      {/* sds */}
     </div>
   );
 }

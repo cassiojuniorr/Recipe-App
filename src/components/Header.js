@@ -23,7 +23,7 @@ class Header extends React.Component {
   render() {
     const { title } = this.props;
     const { searchActivated } = this.state;
-    const { containerHeader, links, groupSearch } = style;
+    const { containerHeader, links } = style;
     return (
       <div className={ containerHeader }>
         <h2 data-testid="page-title">{title}</h2>
@@ -37,8 +37,8 @@ class Header extends React.Component {
         </Link>
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
-          <div className={ groupSearch }>
-            <img
+          <div>
+            <svg
               data-testid="search-top-btn"
               src={ searchIcon }
               alt="searchIcon"
