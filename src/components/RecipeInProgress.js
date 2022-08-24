@@ -15,6 +15,7 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
   const [markedState, setMarked] = useState({ marked: false });
   const [favoriteState, setFavorite] = useState({ favoriteIcon: false });
   const [finishState, setFinish] = useState({ isDisabled: true });
+  const [copyState, setCopy] = useState({ copyed: false });
 
   useEffect(() => {
     const page = pageActual.includes('Foods') ? 'foods' : 'drinks';
@@ -32,7 +33,7 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
     if (marked) {
       setFinish((prevState) => ({ isDisabled: !prevState.isDisabled }));
     }
-  }, [marked]);
+  });
 
   const scratchIngredient = () => {
     const { recipes } = recipeState;
@@ -52,12 +53,31 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
     setRedirect({ redirect: true });
   };
 
+  const getUrl = () => {
+    const url = window.location.href;
+    const urlProgress = url.slice(0, url.lastIndexOf('/'));
+    return urlProgress;
+  };
+
+  const handleShare = () => {
+    const input = document.createElement('input');
+    const lik = document.getElementById('share');
+    input.focus();
+    input.select();
+    // navigator.clipboard.writeText(getUrl());
+    copy.writeText(getUrl());
+    lik.style.display = 'block';
+    setTimeout(() => { lik.style.display = 'none'; }, Number('1500'));
+    setCopy({ copyed: true });
+  };
+
   const { recipes } = recipeState;
   const { page } = pageState;
   const { redirect } = redirectState;
   const { marked } = markedState;
   const { favoriteIcon } = favoriteState;
   const { isDisabled } = finishState;
+  const { copyed } = copyState;
 
   return (
     <div>
@@ -80,13 +100,18 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
                 : elm.strDrink}
             </span>
 
-            <button
-              type="button"
-              data-testid="share-btn"
-              onClick={ () => copy(elm) }
-            >
-              <img src={ shareIcon } alt="share-btn" />
-            </button>
+            <div id="share">
+
+              { copyed && (<h1>Link copied!</h1>)}
+
+              <button
+                type="button"
+                data-testid="share-btn"
+                onClick={ handleShare }
+              >
+                <img src={ shareIcon } alt="share-btn" />
+              </button>
+            </div>
 
             <button
               type="button"
