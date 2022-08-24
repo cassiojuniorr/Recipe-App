@@ -10,7 +10,7 @@ class ProfileInfo extends React.Component {
     const userKey = localStorage.getItem('user');
     const userEmail = JSON.parse(userKey);
     return (
-      <div>
+      <div className="recipes">
         <h5 data-testid="profile-email">{ userEmail?.email }</h5>
         <Link to="/done-recipes">
           <button type="button" data-testid="profile-done-btn">Done Recipes</button>
