@@ -5,10 +5,13 @@ import ProfileInfo from '../components/ProfileInfo';
 import Header from '../components/Header';
 
 class Profile extends React.Component {
+  searchByBarOn = () => {}
+
   render() {
+    console.log(this.searchByBarOn());
     return (
       <div>
-        <Header title="Profile" searchByBarOn={ () => 'teste' } />
+        <Header title="Profile" searchByBarOn={ this.searchByBarOn } />
         <ProfileInfo />
         <Footer />
       </div>

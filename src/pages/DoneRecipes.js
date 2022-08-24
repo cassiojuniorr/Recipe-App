@@ -10,10 +10,13 @@ class DoneRecipes extends React.Component {
     };
   }
 
+  searchByBarOn = () => {}
+
   render() {
+    console.log(this.searchByBarOn());
     return (
       <div>
-        <Header title="Done Recipes" searchByBarOn={ () => 'teste' } />
+        <Header title="Done Recipes" searchByBarOn={ this.searchByBarOn } />
       </div>
     );
   }
