@@ -27,6 +27,13 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
     setPage({ page });
   }, []);
 
+  useEffect(() => {
+    const { marked } = markedState;
+    if (marked) {
+      setFinish((prevState) => ({ isDisabled: !prevState.isDisabled }));
+    }
+  }, [marked]);
+
   const scratchIngredient = () => {
     const { recipes } = recipeState;
     const { page } = pageState;
@@ -50,6 +57,7 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
   const { redirect } = redirectState;
   const { marked } = markedState;
   const { favoriteIcon } = favoriteState;
+  const { isDisabled } = finishState;
 
   return (
     <div>
