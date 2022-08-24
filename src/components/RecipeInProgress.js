@@ -8,9 +8,9 @@ import notFavorite from '../images/blackHeartIcon.svg';
 
 const copy = require('clipboard-copy');
 
-function RecipeInProgress({ pageActual, meals, drinks }) {
+function RecipeInProgress({ pageActual, id, drinks, meals }) {
   const [pageState, setPage] = useState({ page: '' });
-  const [recipeState, setRecipe] = useState({ recipes: [] });
+  const [recipeState, setRecipe] = useState({ recipe: [] });
   const [redirectState, setRedirect] = useState({ redirect: false });
   const [markedState, setMarked] = useState({ marked: false });
   const [favoriteState, setFavorite] = useState({ favoriteIcon: false });
@@ -21,28 +21,28 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
     const page = pageActual.includes('Foods') ? 'foods' : 'drinks';
     const pag = drinks.length > 0;
     const recipes = pag ? drinks : meals;
+    const recipe = recipes.find((elm) => (
+      (page === foods) ? elm.idMeal === id : elm.idDrinks === id
+    ));
     const obj = localStorage.getItem('inProgressRecipes');
-    if (recipes === obj) setMarked({ marked: true });
+    if (recipe === obj) setMarked({ marked: true });
 
-    setRecipe({ recipes });
+    setRecipe({ recipe });
     setPage({ page });
   }, []);
 
-  useEffect(() => {
-    const { marked } = markedState;
-    if (marked) {
-      setFinish((prevState) => ({ isDisabled: !prevState.isDisabled }));
-    }
-  });
+  // useEffect(() => {
+  //   const { marked } = markedState;
+  //   if (marked) {
+  //     setFinish((prevState) => ({ isDisabled: !prevState.isDisabled }));
+  //   }
+  // });
 
-  const scratchIngredient = () => {
-    const { recipes } = recipeState;
-    const { page } = pageState;
-    const obj = recipes.find((elm) => (
-      (page === 'foods') ? elm.idMeal === id : elm.idDrinks === elm
-    ));
+  const ingredientBox = () => {
+    const { recipe } = recipeState;
+
     setMarked((prevState) => ({ marked: !prevState.marked }));
-    localStorage.setItem('inProgressRecipes', obj);
+    localStorage.setItem('inProgressRecipes', recipe);
   };
 
   const toggleFavorite = () => {
@@ -71,7 +71,7 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
     setCopy({ copyed: true });
   };
 
-  const { recipes } = recipeState;
+  const { recipe } = recipeState;
   const { page } = pageState;
   const { redirect } = redirectState;
   const { marked } = markedState;
@@ -82,7 +82,7 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
   return (
     <div>
       {
-        recipes.map((elm, i) => (
+        recipe.map((elm, i) => (
           <div key={ (page === 'foods') ? elm.idMeal : elm.idDrinks }>
             <img
               src={
@@ -139,10 +139,11 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
                   elm.strIngredient.concat(i)
                 )}
               </span>
+
               <input
                 type="checkbox"
                 value={ marked }
-                onChange={ scratchIngredient }
+                onChange={ ingredientBox }
               />
             </div>
             <span data-testid="instructions">{elm.strInstructions}</span>
@@ -166,6 +167,7 @@ function RecipeInProgress({ pageActual, meals, drinks }) {
 RecipeInProgress.propTypes = {
   meals: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
   drinks: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
+  id: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
   pageActual: propTypes.string.isRequired,
 };
 
