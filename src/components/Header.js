@@ -8,21 +8,8 @@ import searchIcon from '../images/searchIcon.svg';
 import style from '../styles/header.module.scss';
 
 class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      searchActivated: false,
-    };
-  }
-
-  toggleSearchInput = () => {
-    const { searchActivated } = this.state;
-    this.setState({ searchActivated: !searchActivated });
-  }
-
   render() {
-    const { title } = this.props;
-    const { searchActivated } = this.state;
+    const { title, searchActivated, toggleSearchInput } = this.props;
     const { containerHeader, links } = style;
     return (
       <div className={ containerHeader }>
@@ -38,13 +25,14 @@ class Header extends React.Component {
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
           <div>
-            <svg
-              data-testid="search-top-btn"
-              src={ searchIcon }
-              alt="searchIcon"
-              onClick={ this.toggleSearchInput }
-              className={ links }
-            />
+            <button type="button" onClick={ toggleSearchInput }>
+              <img
+                data-testid="search-top-btn"
+                src={ searchIcon }
+                alt="searchIcon"
+                className={ links }
+              />
+            </button>
             { searchActivated && <SearchBar pageActual={ title } /> }
           </div>
         ) }
@@ -55,6 +43,8 @@ class Header extends React.Component {
 
 Header.propTypes = {
   title: propTypes.string.isRequired,
+  searchActivated: propTypes.bool.isRequired,
+  toggleSearchInput: propTypes.func.isRequired,
 };
 
 export default connect(null, null)(Header);

@@ -64,37 +64,40 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
         <div>
 
           <label htmlFor="ingredient-search-radio">
-            Ingredient
             <input
               type="radio"
+              name="typeSearch"
               data-testid="ingredient-search-radio"
               id="ingredient-search-radio"
               value="ingredient"
               onChange={ setChanges }
             />
+            Ingredient
           </label>
 
           <label htmlFor="name-search-radio">
-            Name
             <input
               type="radio"
+              name="typeSearch"
               data-testid="name-search-radio"
               id="name-search-radio"
               value="name"
               onChange={ setChanges }
 
             />
+            Name
           </label>
 
           <label htmlFor="first-letter-search-radio">
-            First Letter
             <input
               type="radio"
+              name="typeSearch"
               data-testid="first-letter-search-radio"
               id="first-letter-search-radio"
               value="firstLetter"
               onChange={ setChanges }
             />
+            First Letter
           </label>
         </div>
 

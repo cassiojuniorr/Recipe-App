@@ -16,6 +16,14 @@ export const accAddRecipeDrinks = (drinks) => (
   { type: actionTypes.ADD_RECIPE_DRINKS, drinks }
 );
 
+export const accAddCategoryMeals = (categories) => (
+  { type: actionTypes.ADD_CATEGORY_MEALS, categories }
+);
+
+export const accAddCategoryDrinks = (categories) => (
+  { type: actionTypes.ADD_CATEGORY_DRINKS, categories }
+);
+
 export const accFailRecipe = (error) => (
   { type: actionTypes.FAIL_API, error }
 );

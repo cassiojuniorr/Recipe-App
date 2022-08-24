@@ -6,4 +6,8 @@ export const ADD_RECIPE_MEALS = 'ADD_RECIPE_MEALS';
 
 export const ADD_RECIPE_DRINKS = 'ADD_RECIPE_DRINKS';
 
+export const ADD_CATEGORY_MEALS = 'ADD_CATEGORY_MEALS';
+
+export const ADD_CATEGORY_DRINKS = 'ADD_CATEGORY_DRINKS';
+
 export const FAIL_API = 'FAIL_API';
