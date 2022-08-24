@@ -60,10 +60,6 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       load: false,
-      meals: [],
-      drinks: [],
-      categoryMeals: [],
-      categoryDrinks: [],
       error: action.error,
     });
   default:

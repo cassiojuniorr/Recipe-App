@@ -8,8 +8,22 @@ import searchIcon from '../images/searchIcon.svg';
 import style from '../styles/header.module.scss';
 
 class Header extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      searchActivated: false,
+    };
+  }
+
+  toggleSearchInput = () => {
+    const { searchActivated } = this.state;
+    this.setState({ searchActivated: !searchActivated });
+  }
+
   render() {
-    const { title, searchActivated, toggleSearchInput } = this.props;
+    const { title, searchByBarOn } = this.props;
+    const { searchActivated } = this.state;
+
     const { containerHeader, links } = style;
     return (
       <div className={ containerHeader }>
@@ -25,7 +39,7 @@ class Header extends React.Component {
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
           <div>
-            <button type="button" onClick={ toggleSearchInput }>
+            <button type="button" onClick={ this.toggleSearchInput }>
               <img
                 data-testid="search-top-btn"
                 src={ searchIcon }
@@ -33,7 +47,11 @@ class Header extends React.Component {
                 className={ links }
               />
             </button>
-            { searchActivated && <SearchBar pageActual={ title } /> }
+            { searchActivated && (
+              <SearchBar
+                pageActual={ title }
+                searchByBarOn={ searchByBarOn }
+              />) }
           </div>
         ) }
       </div>
@@ -43,8 +61,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   title: propTypes.string.isRequired,
-  searchActivated: propTypes.bool.isRequired,
-  toggleSearchInput: propTypes.func.isRequired,
+  searchByBarOn: propTypes.func.isRequired,
 };
 
 export default connect(null, null)(Header);

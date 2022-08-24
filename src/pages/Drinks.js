@@ -11,37 +11,36 @@ class Drinks extends React.Component {
   constructor() {
     super();
     this.state = {
-      searchActivated: false,
+      searchByBar: false,
     };
   }
 
   componentDidMount() {
     const { makeSearchDrinks, searchCategoryDrinks } = this.props;
-    const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    makeSearchDrinks(endpoint);
     const endpointCategory = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
     searchCategoryDrinks(endpointCategory);
+    const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    makeSearchDrinks(endpoint);
   }
 
-  toggleSearchInput = () => {
-    const { searchActivated } = this.state;
-    this.setState({ searchActivated: !searchActivated });
+  searchByBarOn = () => {
+    this.setState({ searchByBar: true });
+  }
+
+  searchByCategoryOn = () => {
+    this.setState({ searchByBar: false });
   }
 
   render() {
     const { drinks } = this.props;
-    const { searchActivated } = this.state;
-    if (drinks.length === 1 && searchActivated === true) {
+    const { searchByBar } = this.state;
+    if (drinks.length === 1 && searchByBar === true) {
       return <Redirect to={ `/drinks/${drinks[0].idDrink}` } />;
     }
     return (
       <div>
-        <Header
-          title="Drinks"
-          searchActivated={ searchActivated }
-          toggleSearchInput={ this.toggleSearchInput }
-        />
-        <Recipes title="Drinks" />
+        <Header title="Drinks" searchByBarOn={ this.searchByBarOn } />
+        <Recipes title="Drinks" searchByCategoryOn={ this.searchByCategoryOn } />
         <Footer />
       </div>
     );

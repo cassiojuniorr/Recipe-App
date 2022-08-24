@@ -18,7 +18,8 @@ class Recipes extends React.Component {
   }
 
   render() {
-    const { drinks, meals, categoryMeals, categoryDrinks, title } = this.props;
+    const { drinks, meals, categoryMeals, categoryDrinks,
+      title, searchByCategoryOn } = this.props;
     const isDrink = drinks.length > 0;
     const recipesList = isDrink ? drinks : meals;
     const categoryList = isDrink ? categoryDrinks : categoryMeals;
@@ -34,6 +35,7 @@ class Recipes extends React.Component {
                 title={ title }
                 testId={ `${strCategory}-category-filter` }
                 strCategory={ strCategory }
+                searchByCategoryOn={ searchByCategoryOn }
               />
             );
           })}
@@ -80,6 +82,7 @@ Recipes.propTypes = {
   categoryDrinks: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
   makeSearchMeals: propTypes.func.isRequired,
   makeSearchDrinks: propTypes.func.isRequired,
+  searchByCategoryOn: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

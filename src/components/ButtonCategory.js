@@ -12,7 +12,7 @@ class ButtonCategory extends React.Component {
   }
 
   searchByCategory = (category) => {
-    const { makeSearchMeals, makeSearchDrinks, title } = this.props;
+    const { makeSearchMeals, makeSearchDrinks, title, searchByCategoryOn } = this.props;
     const { filterOn } = this.state;
     const filterFoods = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
     const filterDrinks = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`;
@@ -20,6 +20,7 @@ class ButtonCategory extends React.Component {
     const clearFilterDrinks = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
     if (title === 'Drinks') {
       if (filterOn === false) {
+        searchByCategoryOn();
         makeSearchDrinks(filterDrinks);
         this.setState({ filterOn: !filterOn });
       } else {
@@ -29,6 +30,7 @@ class ButtonCategory extends React.Component {
     }
     if (title === 'Foods') {
       if (filterOn === false) {
+        searchByCategoryOn();
         makeSearchMeals(filterFoods);
         this.setState({ filterOn: !filterOn });
       } else {
@@ -58,6 +60,7 @@ ButtonCategory.propTypes = {
   strCategory: propTypes.string.isRequired,
   makeSearchMeals: propTypes.func.isRequired,
   makeSearchDrinks: propTypes.func.isRequired,
+  searchByCategoryOn: propTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

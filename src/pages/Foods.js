@@ -11,37 +11,36 @@ class Foods extends React.Component {
   constructor() {
     super();
     this.state = {
-      searchActivated: false,
+      searchByBar: false,
     };
   }
 
   componentDidMount() {
     const { makeSearchMeals, searchCategoryMeals } = this.props;
-    const endpoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    makeSearchMeals(endpoint);
     const endpointCategory = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
     searchCategoryMeals(endpointCategory);
+    const endpoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    makeSearchMeals(endpoint);
   }
 
-  toggleSearchInput = () => {
-    const { searchActivated } = this.state;
-    this.setState({ searchActivated: !searchActivated });
+  searchByBarOn = () => {
+    this.setState({ searchByBar: true });
+  }
+
+  searchByCategoryOn = () => {
+    this.setState({ searchByBar: false });
   }
 
   render() {
     const { meals } = this.props;
-    const { searchActivated } = this.state;
-    if (meals.length === 1 && searchActivated === true) {
+    const { searchByBar } = this.state;
+    if (meals.length === 1 && searchByBar === true) {
       return <Redirect to={ `/foods/${meals[0].idMeal}` } />;
     }
     return (
       <div>
-        <Header
-          title="Foods"
-          searchActivated={ searchActivated }
-          toggleSearchInput={ this.toggleSearchInput }
-        />
-        <Recipes title="Foods" />
+        <Header title="Foods" searchByBarOn={ this.searchByBarOn } />
+        <Recipes title="Foods" searchByCategoryOn={ this.searchByCategoryOn } />
         <Footer />
       </div>
     );
