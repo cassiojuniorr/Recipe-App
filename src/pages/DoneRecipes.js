@@ -13,7 +13,7 @@ class DoneRecipes extends React.Component {
   render() {
     return (
       <div>
-        <Header title="Done Recipes" />
+        <Header title="Done Recipes" searchByBarOn={ () => 'teste' } />
       </div>
     );
   }

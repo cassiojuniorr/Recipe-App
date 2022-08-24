@@ -13,7 +13,7 @@ class FavoriteRecipes extends React.Component {
   render() {
     return (
       <div>
-        <Header title="Favorite Recipes" />
+        <Header title="Favorite Recipes" searchByBarOn={ () => 'teste' } />
       </div>
     );
   }
