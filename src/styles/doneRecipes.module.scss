@@ -1,0 +1,12 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.containerDone {
+    margin-top: 100px;
+    padding: 50px;
+    color: black;
+}
+
+.imgDone {
+    width: 300px;
+}

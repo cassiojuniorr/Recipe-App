@@ -4,110 +4,34 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 
-const drinks = {
+const drinks1 = {
   drinks: [
+    {
+      idDrink: '15997',
+      strDrink: 'GG',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
+    },
     {
       idDrink: '17222',
       strDrink: 'A1',
-      strDrinkAlternate: null,
-      strTags: null,
-      strVideo: null,
-      strCategory: 'Cocktail',
-      strIBA: null,
-      strAlcoholic: 'Alcoholic',
-      strGlass: 'Cocktail glass',
-      'strInstructionsZH-HANS': null,
-      'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg',
-      strIngredient1: 'Gin',
-      strIngredient2: 'Grand Marnier',
-      strIngredient3: 'Lemon Juice',
-      strIngredient4: 'Grenadine',
-      strIngredient5: null,
-      strIngredient6: null,
-      strIngredient7: null,
-      strIngredient8: null,
-      strIngredient9: null,
-      strIngredient10: null,
-      strIngredient11: null,
-      strIngredient12: null,
-      strIngredient13: null,
-      strIngredient14: null,
-      strIngredient15: null,
-      strMeasure1: '1 3/4 shot ',
-      strMeasure2: '1 Shot ',
-      strMeasure3: '1/4 Shot',
-      strMeasure4: '1/8 Shot',
-      strMeasure5: null,
-      strMeasure6: null,
-      strMeasure7: null,
-      strMeasure8: null,
-      strMeasure9: null,
-      strMeasure10: null,
-      strMeasure11: null,
-      strMeasure12: null,
-      strMeasure13: null,
-      strMeasure14: null,
-      strMeasure15: null,
-      strImageSource: null,
-      strImageAttribution: null,
-      strCreativeCommonsConfirmed: 'No',
-      dateModified: '2017-09-07 21:42:09',
-    },
-    {
-      idDrink: '13501',
-      strDrink: 'ABC',
-      strDrinkAlternate: null,
-      strTags: null,
-      strVideo: null,
-      strCategory: 'Shot',
-      strIBA: null,
-      strAlcoholic: 'Alcoholic',
-      strGlass: 'Shot glass',
-      strInstructions: 'Layered in a shot glass.',
-      strInstructionsES: 'Coloque todos los ingredientes en un vaso de chupito.',
-      strInstructionsDE: 'Schichtaufbau in einem Schnapsglas.',
-      strInstructionsFR: null,
-      'strInstructionsZH-HANS': null,
-      'strInstructionsZH-HANT': null,
-      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg',
-      strIngredient1: 'Amaretto',
-      strIngredient2: 'Baileys irish cream',
-      strIngredient3: 'Cognac',
-      strIngredient4: null,
-      strIngredient5: null,
-      strIngredient6: null,
-      strIngredient7: null,
-      strIngredient8: null,
-      strIngredient9: null,
-      strIngredient10: null,
-      strIngredient11: null,
-      strIngredient12: null,
-      strIngredient13: null,
-      strIngredient14: null,
-      strIngredient15: null,
-      strMeasure1: '1/3 ',
-      strMeasure2: '1/3 ',
-      strMeasure3: '1/3 ',
-      strMeasure4: null,
-      strMeasure5: null,
-      strMeasure6: null,
-      strMeasure7: null,
-      strMeasure8: null,
-      strMeasure9: null,
-      strMeasure10: null,
-      strMeasure11: null,
-      strMeasure12: null,
-      strMeasure13: null,
-      strMeasure14: null,
-      strMeasure15: null,
-      strImageSource: null,
-      strImageAttribution: null,
-      strCreativeCommonsConfirmed: 'No',
-      dateModified: '2016-08-31 19:32:08',
     },
   ],
 };
+
+const drinks2 = {
+  drinks: [
+    {
+      idDrink: '15997',
+      strDrink: 'GG',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
+    },
+  ],
+};
+
+const id1 = 'search-top-btn';
+const id2 = 'search-input';
+const id3 = 'exec-search-btn';
 
 describe('Test SearchBarRadios', () => {
   afterEach(() => jest.resetAllMocks());
@@ -117,21 +41,21 @@ describe('Test SearchBarRadios', () => {
     const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a';
 
     jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(drinks),
+      json: jest.fn().mockResolvedValue(drinks1),
     });
 
     history.push('/drinks');
 
-    const imgSearch = screen.getByTestId('search-top-btn');
+    const imgSearch = screen.getByTestId(id1);
 
     userEvent.click(imgSearch);
 
-    const inputSearch = screen.getByTestId('search-input');
+    const inputSearch = screen.getByTestId(id2);
     const firsLettertRadio = screen.getByTestId('first-letter-search-radio');
 
     userEvent.type(inputSearch, 'a');
     userEvent.click(firsLettertRadio);
-    userEvent.click(screen.getByTestId('exec-search-btn'));
+    userEvent.click(screen.getByTestId(id3));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(endpoint));
   });
   it('Test Ingredient Radio', async () => {
@@ -139,21 +63,57 @@ describe('Test SearchBarRadios', () => {
     const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=gin';
 
     jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(drinks),
+      json: jest.fn().mockResolvedValue(drinks1),
     });
 
     history.push('/drinks');
 
-    const imgSearch = screen.getByTestId('search-top-btn');
+    const imgSearch = screen.getByTestId(id1);
 
     userEvent.click(imgSearch);
 
-    const inputSearch = screen.getByTestId('search-input');
+    const inputSearch = screen.getByTestId(id2);
     const ingredientRadio = screen.getByTestId('ingredient-search-radio');
 
     userEvent.type(inputSearch, 'gin');
     userEvent.click(ingredientRadio);
-    userEvent.click(screen.getByTestId('exec-search-btn'));
+    userEvent.click(screen.getByTestId(id3));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(endpoint));
+  });
+  it('Teste erro de pesquisa na tela de bebidas', () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    history.push('/drinks');
+
+    const imgSearch = screen.getByTestId(id1);
+
+    userEvent.click(imgSearch);
+
+    const inputSearch = screen.getByTestId(id2);
+    const nameRadio = screen.getByTestId('name-search-radio');
+
+    userEvent.type(inputSearch, 'asdadaa');
+    userEvent.click(nameRadio);
+    userEvent.click(screen.getByTestId(id3));
+  });
+  it('Teste redirecionamento da tela de bebidas', () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue(drinks2),
+    });
+
+    history.push('/drinks');
+
+    const imgSearch = screen.getByTestId(id1);
+
+    userEvent.click(imgSearch);
+
+    const inputSearch = screen.getByTestId(id2);
+    const nameRadio = screen.getByTestId('name-search-radio');
+
+    userEvent.type(inputSearch, 'GG');
+    userEvent.click(nameRadio);
+    userEvent.click(screen.getByTestId(id3));
   });
 });
