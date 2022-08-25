@@ -1,0 +1,10 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.containerInProgress {
+    padding: 50px;
+}
+
+.imgInProgress {
+    width: 300px;
+}
