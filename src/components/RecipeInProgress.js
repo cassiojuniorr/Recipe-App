@@ -1,51 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation, useParams } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import isFavorite from '../images/whiteHeartIcon.svg';
 import notFavorite from '../images/blackHeartIcon.svg';
 
 const copy = require('clipboard-copy');
 
-function RecipeInProgress({ pageActual, id, drinks, meals }) {
+function RecipeInProgress({ pageActual, drinks, meals, recp }) {
   const [pageState, setPage] = useState({ page: '' });
   const [recipeState, setRecipe] = useState({ recipe: [] });
   const [redirectState, setRedirect] = useState({ redirect: false });
   const [markedState, setMarked] = useState({ marked: false });
   const [favoriteState, setFavorite] = useState({ favoriteIcon: false });
+  const [favoriteListState, setFavoriteList] = useState([]);
   const [finishState, setFinish] = useState({ isDisabled: true });
   const [copyState, setCopy] = useState({ copyed: false });
+  const { pathname } = useLocation();
+
+  // referência https://backefront.com.br/como-usar-useparams-react/
+  const { idPost } = useParams();
+
+  const data = {
+    recipeName: (pageActual === 'foods') ? 'strMeal' : 'strDrink',
+    recipeImage: (pageActual === 'foods') ? 'strMealThumb' : 'strDrinkThumb',
+    recipeCategory: (pageActual === 'foods') ? 'strCategory' : 'strAlcoholic',
+  };
 
   useEffect(() => {
     const page = pageActual.includes('Foods') ? 'foods' : 'drinks';
     const pag = drinks.length > 0;
     const recipes = pag ? drinks : meals;
     const recipe = recipes.find((elm) => (
-      (page === foods) ? elm.idMeal === id : elm.idDrinks === id
+      (page === foods) ? elm.idMeal === idPost : elm.idDrinks === idPost
     ));
-    const obj = localStorage.getItem('inProgressRecipes');
-    if (recipe === obj) setMarked({ marked: true });
 
     setRecipe({ recipe });
     setPage({ page });
   }, []);
 
-  // useEffect(() => {
-  //   const { marked } = markedState;
-  //   if (marked) {
-  //     setFinish((prevState) => ({ isDisabled: !prevState.isDisabled }));
-  //   }
-  // });
-
   const ingredientBox = () => {
     const { recipe } = recipeState;
-
     setMarked((prevState) => ({ marked: !prevState.marked }));
     localStorage.setItem('inProgressRecipes', recipe);
   };
 
   const toggleFavorite = () => {
+    let local = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (!Array.isArray(local)) local = [];
+    if (local.some((elm) => elm.id === idPost)) {
+      const list = local.filter((recipe) => recipe.id !== idPost);
+      setFavoriteList(list);
+      localStorage.setItem('inProgressRecipes', list);
+    }
+    localStorage.setItem('inProgressRecipes', [...list,
+      {
+        id,
+        type: (pageActual === 'foods') ? 'food' : 'drink',
+        nationality: recp.strArea ? recp.strArea : '',
+        category: recp.strCategory,
+        alcoholicOrNot: recp.strAlcoholic ? recp.strAlcoholic : '',
+        name: recp[data.recipeName],
+        image: recp[data.recipeImage],
+      }]);
+    setFavoriteList(JSON.parse(localStorage.getItem('inProgressRecipes')));
     setFavorite((prevState) => ({ favoriteIcon: !prevState.favoriteIcon }));
   };
 
@@ -53,21 +72,9 @@ function RecipeInProgress({ pageActual, id, drinks, meals }) {
     setRedirect({ redirect: true });
   };
 
-  const getUrl = () => {
-    const url = window.location.href;
-    const urlProgress = url.slice(0, url.lastIndexOf('/'));
-    return urlProgress;
-  };
-
   const handleShare = () => {
-    const input = document.createElement('input');
-    const lik = document.getElementById('share');
-    input.focus();
-    input.select();
-    // navigator.clipboard.writeText(getUrl());
-    copy.writeText(getUrl());
-    lik.style.display = 'block';
-    setTimeout(() => { lik.style.display = 'none'; }, Number('1500'));
+    const url = pathname.replace('/in-progress', '');
+    copy(`http://localhost:3000${url}`);
     setCopy({ copyed: true });
   };
 
@@ -100,29 +107,30 @@ function RecipeInProgress({ pageActual, id, drinks, meals }) {
                 : elm.strDrink}
             </span>
 
-            <div id="share">
-
-              { copyed && (<h1>Link copied!</h1>)}
-
-              <button
-                type="button"
-                data-testid="share-btn"
-                onClick={ handleShare }
-              >
-                <img src={ shareIcon } alt="share-btn" />
-              </button>
-            </div>
+            { copyed && (<h1>Link copied!</h1>)}
 
             <button
               type="button"
-              data-testid="favorite-btn"
+              onClick={ handleShare }
+            >
+              <img src={ shareIcon } alt="share recipe" data-testid="share-btn" />
+            </button>
+
+            <button
+              type="button"
               onClick={ toggleFavorite }
             >
+              {
+                favoriteListState.some((fav) => fav.id === idPost)
+                  ? (() => setFavorite({ favoriteIcon: true }))
+                  : (() => setFavorite({ favoriteIcon: false }))
+              }
               <img
                 src={
                   (favoriteIcon) ? isFavorite : notFavorite
                 }
                 alt="favorite-btn"
+                data-testid="favorite-btn"
               />
             </button>
 
@@ -167,8 +175,8 @@ function RecipeInProgress({ pageActual, id, drinks, meals }) {
 RecipeInProgress.propTypes = {
   meals: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
   drinks: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
-  id: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
   pageActual: propTypes.string.isRequired,
+  recp: propTypes.arrayOf(propTypes.objectOf(propTypes.string)).isRequired,
 };
 
 const mapStateToProps = ({ recipeReducer: { meals, drinks } }) => ({ meals, drinks });
