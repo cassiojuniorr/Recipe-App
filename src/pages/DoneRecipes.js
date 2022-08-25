@@ -10,31 +10,32 @@ const copy = require('clipboard-copy');
 
 const recipes = [
   {
-    id: '55871',
+    id: '52771',
     type: 'food',
-    nationality: 'Brazileira',
+    nationality: 'Italian',
     category: 'Vegetarian',
     alcoholicOrNot: '',
-    name: 'Fejoada',
-    image: 'https://cdn.panelinha.com.br/receita/1588270905274-39_Panelinha_12_02_200635.jpg',
-    doneDate: '23/06/2050',
-    tags: ['Feijão', 'Carne'],
+    name: 'Spicy Arrabiata Penne',
+    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+    doneDate: '23/06/2020',
+    tags: ['Pasta', 'Curry'],
   },
   {
-    id: '17836',
+    id: '178319',
     type: 'drink',
-    nationality: 'Japonesa',
+    nationality: '',
     category: 'Cocktail',
     alcoholicOrNot: 'Alcoholic',
-    name: 'Corote',
-    image: 'https://us-southeast-1.linodeobjects.com/storage/unicooper/media/uploads/produto/corote_sabores_tutti_frutti_500ml__cde6b2e8-1bd4-4563-9463-16eb61a31ad8.jpg',
-    doneDate: '23/06/2022',
+    name: 'Aquamarine',
+    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+    doneDate: '23/06/2020',
     tags: [],
   },
 ];
 
 function DoneRecipes() {
   // const [recipeState, setRecipe] = useState({ recipe: [] });
+  // teste
   const [typeState, setType] = useState('');
   const [copyState, setCopy] = useState(false);
 
