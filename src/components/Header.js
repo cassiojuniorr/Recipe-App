@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import profileIcon from '../images/profileIcon.svg';
+import searchIcon from '../images/searchIcon.svg';
+import style from '../styles/header.module.scss';
 
 class Header extends React.Component {
   constructor() {
@@ -18,28 +21,37 @@ class Header extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { title, searchByBarOn } = this.props;
     const { searchActivated } = this.state;
+
+    const { containerHeader, links } = style;
     return (
-      <div>
+      <div className={ containerHeader }>
         <h2 data-testid="page-title">{title}</h2>
         <Link to="/profile">
-          <svg
+          <img
             data-testid="profile-top-btn"
-            src="../images/profileIcon.svg"
+            src={ profileIcon }
             alt="profileIcon"
+            className={ links }
           />
         </Link>
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
           <div>
-            <svg
-              data-testid="search-top-btn"
-              src="../images/searchIcon.svg"
-              alt="searchIcon"
-              onClick={ this.toggleSearchInput }
-            />
-            { searchActivated && <SearchBar pageActual={ title } /> }
+            <button type="button" onClick={ this.toggleSearchInput }>
+              <img
+                data-testid="search-top-btn"
+                src={ searchIcon }
+                alt="searchIcon"
+                className={ links }
+              />
+            </button>
+            { searchActivated && (
+              <SearchBar
+                pageActual={ title }
+                searchByBarOn={ searchByBarOn }
+              />) }
           </div>
         ) }
       </div>
@@ -49,6 +61,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   title: propTypes.string.isRequired,
+  searchByBarOn: propTypes.func.isRequired,
 };
 
 export default connect(null, null)(Header);

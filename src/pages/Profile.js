@@ -1,24 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Footer from '../components/Footer';
+import ProfileInfo from '../components/ProfileInfo';
 import Header from '../components/Header';
-// import propTypes from 'prop-types';
 
 class Profile extends React.Component {
+  searchByBarOn = () => {}
+
   render() {
+    console.log(this.searchByBarOn());
     return (
       <div>
-        <Header title="Profile" />
+        <Header title="Profile" searchByBarOn={ this.searchByBarOn } />
+        <ProfileInfo />
+        <Footer />
       </div>
     );
   }
 }
-
-// Header.propTypes = {
-//   title: propTypes.string.isRequired,
-// };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   userLoginDispatch: (email, password) => dispatch(userLogin(email, password)),
-// });
 
 export default connect(null, null)(Profile);

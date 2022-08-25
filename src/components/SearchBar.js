@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import fetchRecipe from '../services/fetchApi';
+import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
 
-function SearchBar({ makeSearch, pageActual }) {
+function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual, searchByBarOn }) {
   const [state, setState] = useState({ inputSearch: '' });
   const [typeState, setType] = useState({ type: '' });
   const [pageState, setPage] = useState({ page: '' });
@@ -30,8 +30,17 @@ function SearchBar({ makeSearch, pageActual }) {
     const { inputSearch } = state;
     const { type } = typeState;
     const { page } = pageState;
-    const endpoint = ENDPOINST[page][type].concat(inputSearch);
-    makeSearch(endpoint);
+    if (type === 'firstLetter' && inputSearch.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    } else if (page === 'foods') {
+      searchByBarOn();
+      const endpoint = ENDPOINST.foods[type].concat(inputSearch);
+      makeSearchMeals(endpoint);
+    } else {
+      searchByBarOn();
+      const endpoint = ENDPOINST.drinks[type].concat(inputSearch);
+      makeSearchDrinks(endpoint);
+    }
   };
 
   const setChanges = ({ target }) => {
@@ -43,6 +52,7 @@ function SearchBar({ makeSearch, pageActual }) {
 
   const { inputSearch } = state;
   const { type } = typeState;
+
   return (
     <div>
       <form>
@@ -53,60 +63,69 @@ function SearchBar({ makeSearch, pageActual }) {
           onChange={ ({ target }) => setState({ ...state, inputSearch: target.value }) }
         />
 
-        <label htmlFor="ingredient-search-radio">
-          Ingredient
-          <input
-            type="radio"
-            data-testid="ingredient-search-radio"
-            id="ingredient-search-radio"
-            value="ingredient"
-            onChange={ setChanges }
-          />
-        </label>
+        <div>
 
-        <label htmlFor="name-search-radio">
-          Name
-          <input
-            type="radio"
-            data-testid="name-search-radio"
-            id="name-search-radio"
-            value="name"
-            onChange={ setChanges }
-          />
-        </label>
+          <label htmlFor="ingredient-search-radio">
+            <input
+              type="radio"
+              name="typeSearch"
+              data-testid="ingredient-search-radio"
+              id="ingredient-search-radio"
+              value="ingredient"
+              onChange={ setChanges }
+            />
+            Ingredient
+          </label>
 
-        <label htmlFor="first-letter-search-radio">
-          First Letter
-          <input
-            type="radio"
-            data-testid="first-letter-search-radio"
-            id="first-letter-search-radio"
-            value="firstLetter"
-            onChange={ setChanges }
-          />
-        </label>
+          <label htmlFor="name-search-radio">
+            <input
+              type="radio"
+              name="typeSearch"
+              data-testid="name-search-radio"
+              id="name-search-radio"
+              value="name"
+              onChange={ setChanges }
+
+            />
+            Name
+          </label>
+
+          <label htmlFor="first-letter-search-radio">
+            <input
+              type="radio"
+              name="typeSearch"
+              data-testid="first-letter-search-radio"
+              id="first-letter-search-radio"
+              value="firstLetter"
+              onChange={ setChanges }
+            />
+            First Letter
+          </label>
+        </div>
 
         <button
           type="button"
           data-testid="exec-search-btn"
-          onClick={ () => makeFetchApi() }
+          disabled={ type.length === 0 || inputSearch.length === 0 }
+          onClick={ makeFetchApi }
         >
           SEARCH
         </button>
-        { (type === 'firstLetter' && inputSearch.length > 1)
-        && global.alert('Your search must have only 1 (one) character')}
       </form>
     </div>
   );
 }
 
 SearchBar.propTypes = {
-  makeSearch: PropTypes.func.isRequired,
+  makeSearchMeals: PropTypes.func.isRequired,
+  makeSearchDrinks: PropTypes.func.isRequired,
   pageActual: PropTypes.string.isRequired,
+  searchByBarOn: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  makeSearch: (endpoint) => dispatch(fetchRecipe(endpoint)),
+  makeSearchMeals: (endpoint) => dispatch(fetchRecipeMeals(endpoint)),
+  makeSearchDrinks: (endpoint) => dispatch(fetchRecipeDrinks(endpoint)),
 });
 
 export default connect(null, mapDispatchToProps)(SearchBar);

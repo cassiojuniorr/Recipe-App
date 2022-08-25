@@ -14,7 +14,7 @@ import DrinksIdInProgress from './pages/DrinksIdInProgress';
 
 function App() {
   return (
-    <div className="meals">
+    <div>
       <Switch>
         <Route exact path="/" component={ Login } />
 

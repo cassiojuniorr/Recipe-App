@@ -4,6 +4,7 @@ import propTypes from 'prop-types';
 import { userLogin } from '../redux/actions';
 import rockGlass from '../images/rockGlass.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import style from '../styles/login.module.scss';
 
 class Login extends React.Component {
   constructor() {
@@ -41,9 +42,6 @@ class Login extends React.Component {
   }
 
   handleEnter = async () => {
-    // const response = await fetch('https://opentdb.com/api_token.php?command=request');
-    // const data = await response.json();
-    // const token = await data.token;
     const { email } = this.state;
     localStorage.setItem('user', JSON.stringify({ email }));
     localStorage.setItem('mealsToken', '1');
@@ -55,6 +53,12 @@ class Login extends React.Component {
 
   render() {
     const { email, password, invalid } = this.state;
+    const {
+      containerLogin,
+      inputsContainerLogin,
+      inputsLogin,
+      preencha,
+      btnLogin } = style;
     return (
       <div className="meals">
         <span className="logo">TRYBE!!</span>
@@ -65,15 +69,16 @@ class Login extends React.Component {
         >
           Glass
         </object>
-        <div>
+        <div className={ containerLogin }>
           <p>Informe seu email e senha:</p>
           <form>
-            <div>
+            <div className={ inputsContainerLogin }>
               <input
                 type="email"
                 name="email"
                 placeholder="email"
                 data-testid="email-input"
+                className={ inputsLogin }
                 value={ email }
                 onChange={ (event) => this.handleInputChange(event) }
               />
@@ -82,17 +87,22 @@ class Login extends React.Component {
                 name="password"
                 placeholder="password"
                 data-testid="password-input"
+                className={ inputsLogin }
                 value={ password }
                 onChange={ (event) => this.handleInputChange(event) }
               />
             </div>
             {
-              (invalid) ? <p>Por favor preencha corretamente as informações</p> : <> </>
+              (invalid) ? (
+                <div className={ preencha }>
+                  <p>Por favor preencha corretamente as informações</p>
+                </div>) : <> </>
             }
             <button
               type="button"
               disabled={ invalid }
               data-testid="login-submit-btn"
+              className={ btnLogin }
               onClick={ () => this.handleEnter() }
             >
               Enter
