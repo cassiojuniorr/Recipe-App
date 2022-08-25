@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect, useLocation, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import isFavorite from '../images/whiteHeartIcon.svg';
 import notFavorite from '../images/blackHeartIcon.svg';
@@ -17,7 +17,7 @@ function RecipeInProgress({ pageActual, drinks, meals, recp }) {
   const [favoriteListState, setFavoriteList] = useState([]);
   const [finishState, setFinish] = useState({ isDisabled: true });
   const [copyState, setCopy] = useState({ copyed: false });
-  const { pathname } = useLocation();
+  const history = useHistory();
 
   // referência https://backefront.com.br/como-usar-useparams-react/
   const { idPost } = useParams();
@@ -31,10 +31,7 @@ function RecipeInProgress({ pageActual, drinks, meals, recp }) {
   useEffect(() => {
     const page = pageActual.includes('Foods') ? 'foods' : 'drinks';
     const pag = drinks.length > 0;
-    const recipes = pag ? drinks : meals;
-    const recipe = recipes.find((elm) => (
-      (page === foods) ? elm.idMeal === idPost : elm.idDrinks === idPost
-    ));
+    const recipe = pag ? drinks : meals;
 
     setRecipe({ recipe });
     setPage({ page });
@@ -73,6 +70,7 @@ function RecipeInProgress({ pageActual, drinks, meals, recp }) {
   };
 
   const handleShare = () => {
+    const { location: { pathname } } = history;
     const url = pathname.replace('/in-progress', '');
     copy(`http://localhost:3000${url}`);
     setCopy({ copyed: true });
