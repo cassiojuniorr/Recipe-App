@@ -54,11 +54,13 @@ function DoneRecipes() {
     setTimeout(() => setCopy(false), Number('2000'));
   };
 
+  const searchByBarOn = () => {};
+
   const { containerDone, imgDone } = style;
 
   return (
     <div>
-      <Header title="Done Recipes" />
+      <Header title="Done Recipes" searchByBarOn={ searchByBarOn } />
       <div className={ containerDone }>
 
         <button

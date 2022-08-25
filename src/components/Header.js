@@ -21,8 +21,9 @@ class Header extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { title, searchByBarOn } = this.props;
     const { searchActivated } = this.state;
+
     const { containerHeader, links } = style;
     return (
       <div className={ containerHeader }>
@@ -38,14 +39,19 @@ class Header extends React.Component {
         { (title !== 'Profile' && title !== 'Done Recipes'
         && title !== 'Favorite Recipes') && (
           <div>
-            <svg
-              data-testid="search-top-btn"
-              src={ searchIcon }
-              alt="searchIcon"
-              onClick={ this.toggleSearchInput }
-              className={ links }
-            />
-            { searchActivated && <SearchBar pageActual={ title } /> }
+            <button type="button" onClick={ this.toggleSearchInput }>
+              <img
+                data-testid="search-top-btn"
+                src={ searchIcon }
+                alt="searchIcon"
+                className={ links }
+              />
+            </button>
+            { searchActivated && (
+              <SearchBar
+                pageActual={ title }
+                searchByBarOn={ searchByBarOn }
+              />) }
           </div>
         ) }
       </div>
@@ -55,6 +61,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   title: propTypes.string.isRequired,
+  searchByBarOn: propTypes.func.isRequired,
 };
 
 export default connect(null, null)(Header);

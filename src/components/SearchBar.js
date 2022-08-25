@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
 
-function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
+function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual, searchByBarOn }) {
   const [state, setState] = useState({ inputSearch: '' });
   const [typeState, setType] = useState({ type: '' });
   const [pageState, setPage] = useState({ page: '' });
@@ -33,9 +33,11 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
     if (type === 'firstLetter' && inputSearch.length > 1) {
       global.alert('Your search must have only 1 (one) character');
     } else if (page === 'foods') {
+      searchByBarOn();
       const endpoint = ENDPOINST.foods[type].concat(inputSearch);
       makeSearchMeals(endpoint);
     } else {
+      searchByBarOn();
       const endpoint = ENDPOINST.drinks[type].concat(inputSearch);
       makeSearchDrinks(endpoint);
     }
@@ -64,37 +66,40 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual }) {
         <div>
 
           <label htmlFor="ingredient-search-radio">
-            Ingredient
             <input
               type="radio"
+              name="typeSearch"
               data-testid="ingredient-search-radio"
               id="ingredient-search-radio"
               value="ingredient"
               onChange={ setChanges }
             />
+            Ingredient
           </label>
 
           <label htmlFor="name-search-radio">
-            Name
             <input
               type="radio"
+              name="typeSearch"
               data-testid="name-search-radio"
               id="name-search-radio"
               value="name"
               onChange={ setChanges }
 
             />
+            Name
           </label>
 
           <label htmlFor="first-letter-search-radio">
-            First Letter
             <input
               type="radio"
+              name="typeSearch"
               data-testid="first-letter-search-radio"
               id="first-letter-search-radio"
               value="firstLetter"
               onChange={ setChanges }
             />
+            First Letter
           </label>
         </div>
 
@@ -115,6 +120,7 @@ SearchBar.propTypes = {
   makeSearchMeals: PropTypes.func.isRequired,
   makeSearchDrinks: PropTypes.func.isRequired,
   pageActual: PropTypes.string.isRequired,
+  searchByBarOn: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
