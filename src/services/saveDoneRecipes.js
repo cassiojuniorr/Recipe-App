@@ -1,4 +1,4 @@
-const saveDoneRecipes = (recipe, id, page) => {
+const saveDoneRecipes = (recipe, id, page, bool) => {
   const doneStore = JSON.parse(localStorage.getItem('doneRecipes')) !== null
     ? JSON.parse(localStorage.getItem('doneRecipes')) : [];
 
@@ -22,9 +22,10 @@ const saveDoneRecipes = (recipe, id, page) => {
     };
     localStorage.setItem('doneRecipes', JSON.stringify([...doneStore, objDone]));
   }
-
-  const rmvDone = doneFilter.filter((elm) => elm.id !== id);
-  localStorage.setItem('doneRecipes', JSON.stringify(rmvDone));
+  if (bool === false && doneFilter.length !== 0) {
+    const rmvDone = doneFilter.filter((elm) => elm.id !== id);
+    localStorage.setItem('doneRecipes', JSON.stringify(rmvDone));
+  }
 };
 
 export default saveDoneRecipes;

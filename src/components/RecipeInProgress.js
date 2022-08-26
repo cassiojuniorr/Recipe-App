@@ -6,45 +6,14 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import '../styles/inProgress.css';
-// import { takeRecipe } from '../services/fetchApi';
+import { takeRecipe } from '../services/fetchApi';
 import saveDoneRecipes from '../services/saveDoneRecipes';
 import toggleFavorite from '../services/toggleFavorite';
 import getProgress from '../services/getProgress';
 
 const copy = require('clipboard-copy');
 
-const recipes = [
-  {
-    idMeal: '52977',
-    strMeal: 'Corba',
-    strCategory: 'Side',
-    alcoholicOrNot: '',
-    strMealThumb: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
-    strTags: ['Soup'],
-    strInstructions: 'Pick through your lentils for any foreign debris, rinse them',
-    strIngredient1: 'Lentils',
-    strIngredient2: 'Onion',
-    strIngredient3: 'Carrots',
-    strIngredient4: 'Tomato Puree',
-    strIngredient5: 'Csda',
-    strIngredient6: 'ghg',
-    strIngredient7: 'wrk',
-    strIngredient8: 'Cdfsd',
-  },
-  // {
-  //   idDrink: '178319',
-  //   strDrink: 'GG',
-  //   strCategory: 'Ordinary Drink',
-  //   strAlcoholic: 'Optional alcohol',
-  //   strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
-  //   strInstructions: 'Pick through your lentils for any foreign debris, rinse them',
-  //   strIngredient1: 'Galliano',
-  //   strIngredient2: 'Ginger ale',
-  //   strIngredient3: 'Ice',
-  // },
-];
-
-function RecipeInProgress({ pageActual }) {
+function RecipeInProgress({ pageActual, recipeId }) {
   const history = useHistory();
   const { location: { pathname } } = history;
   const pathWithBars = pathname.split('/');
@@ -65,12 +34,24 @@ function RecipeInProgress({ pageActual }) {
 
   useEffect(() => {
     const getRecipe = async () => {
-      // const recipe = await takeRecipe(pageActual, idPost);
+      const recipe = await takeRecipe(pageActual, recipeId);
 
-      setRecipe({ recipe: recipes });
+      setRecipe({ recipe: [recipe] });
     };
-    return getRecipe();
+    const getLocalStorage = () => {
+      const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
+        ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
+
+      setFavorite(favoriteStore.some((recipe) => recipe.id === recipeId));
+    };
+
+    getLocalStorage();
+    getRecipe();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(recipeId.recipeId);
+  // }, []);
 
   // useEffect(() => {
   //   const checks = localStorage.getItem('CheckBoxIds');
@@ -106,25 +87,28 @@ function RecipeInProgress({ pageActual }) {
 
   const makeFave = () => {
     const { recipe } = recipeState;
-    toggleFavorite(recipe[0], urlId, path);
-    getProgress(recipe[0], urlId, path);
+    toggleFavorite(recipe[0], urlId, path, favoriteState);
     setFavorite(!favoriteState);
   };
 
   const favoriteButton = (fav) => {
     if (fav === false) {
-      return (<img
-        src={ whiteHeartIcon }
-        alt="Favorite BTN"
-        data-testid="favorite-btn"
-      />);
+      return (
+        <img
+          src={ whiteHeartIcon }
+          alt="Favorite BTN"
+          data-testid="favorite-btn"
+        />
+      );
     }
     if (fav === true) {
-      return (<img
-        src={ blackHeartIcon }
-        alt="Favorite BTN"
-        data-testid="favorite-btn"
-      />);
+      return (
+        <img
+          src={ blackHeartIcon }
+          alt="Favorite BTN"
+          data-testid="favorite-btn"
+        />
+      );
     }
   };
 
@@ -141,8 +125,10 @@ function RecipeInProgress({ pageActual }) {
 
   const setCheckBox = ({ target }) => {
     const check = document.getElementsByName(target.id);
+    const { recipe } = recipeState;
     if (target.checked === true) {
       check[0].className = 'marked';
+      getProgress(recipe[0], urlId, path, target.checked);
       if (checksState.includes(target.id)) {
         const rmvCheck = checksState.filter((elm) => elm !== target.id);
         setchecks(rmvCheck);
@@ -246,4 +232,4 @@ RecipeInProgress.propTypes = {
   pageActual: propTypes.string.isRequired,
 };
 
-export default connect(null)(RecipeInProgress);
+export default connect(null, null)(RecipeInProgress);
