@@ -3,12 +3,13 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
-import isFavorite from '../images/whiteHeartIcon.svg';
-import notFavorite from '../images/blackHeartIcon.svg';
-import style from '../styles/inProgress.module.scss';
-import { takeRecipe } from '../services/fetchApi';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../styles/inProgress.css';
+// import { takeRecipe } from '../services/fetchApi';
 import saveDoneRecipes from '../services/saveDoneRecipes';
 import toggleFavorite from '../services/toggleFavorite';
+import getProgress from '../services/getProgress';
 
 const copy = require('clipboard-copy');
 
@@ -25,7 +26,10 @@ const recipes = [
     strIngredient2: 'Onion',
     strIngredient3: 'Carrots',
     strIngredient4: 'Tomato Puree',
-    strIngredient5: 'Cumin',
+    strIngredient5: 'Csda',
+    strIngredient6: 'ghg',
+    strIngredient7: 'wrk',
+    strIngredient8: 'Cdfsd',
   },
   // {
   //   idDrink: '178319',
@@ -42,7 +46,10 @@ const recipes = [
 
 function RecipeInProgress({ pageActual }) {
   const history = useHistory();
-  const { location: pathname } = history;
+  const { location: { pathname } } = history;
+  const pathWithBars = pathname.split('/');
+  const path = pathWithBars[1];
+  const urlId = pathname.replace(/\D/g, '');
 
   // referência https://backefront.com.br/como-usar-useparams-react/
   const { idPost } = useParams();
@@ -52,15 +59,15 @@ function RecipeInProgress({ pageActual }) {
   const [measureState, setMeasure] = useState([]);
   const [favoriteState, setFavorite] = useState(false);
   const [checksState, setchecks] = useState([]);
-  const [markedState, setMarked] = useState({ marked: false });
   const [finishState, setFinish] = useState({ isDisabled: true });
   const [redirectState, setRedirect] = useState({ redirect: false });
   const [copyState, setCopy] = useState({ copyed: false });
 
   useEffect(() => {
     const getRecipe = async () => {
-      const recipe = await takeRecipe(pageActual, idPost);
-      setRecipe({ recipe });
+      // const recipe = await takeRecipe(pageActual, idPost);
+
+      setRecipe({ recipe: recipes });
     };
     return getRecipe();
   }, []);
@@ -68,7 +75,7 @@ function RecipeInProgress({ pageActual }) {
   // useEffect(() => {
   //   const checks = localStorage.getItem('CheckBoxIds');
   //   const checkList = JSON.parse(checks);
-  //   if (checkList[0] !== undefined) {
+  //   if (checkList[0] !== undefined || checkList[0] !== null) {
   //     checkList.forEach((elm) => {
   //       const check = document.getElementById(elm);
   //       check.setAttribute('checked', true);
@@ -79,13 +86,19 @@ function RecipeInProgress({ pageActual }) {
   // }, [ingredientState]);
 
   const getIngredients = () => {
-    const ingredients = recipes.length !== 0 ? Object.keys(recipes[0])
+    const { recipe } = recipeState;
+
+    const ingredients = recipe.length !== 0 ? Object.keys(recipe[0])
       .filter((elm) => elm.includes('strIngredient')) : [];
 
-    const measuteI = recipes.length !== 0 ? Object.keys(recipes[0])
+    const measuteI = recipe.length !== 0 ? Object.keys(recipe[0])
       .filter((key) => key.includes('strMeasute')) : [];
 
-    setIngredient(ingredients);
+    const filterIngredients = ingredients
+      .filter((elm) => (recipe[0][elm] !== null))
+      .filter((i) => recipe[0][i].length !== 0);
+
+    setIngredient(filterIngredients);
     setMeasure(measuteI);
   };
 
@@ -93,50 +106,63 @@ function RecipeInProgress({ pageActual }) {
 
   const makeFave = () => {
     const { recipe } = recipeState;
-    toggleFavorite(recipe[0], idPost, pageActual);
+    toggleFavorite(recipe[0], urlId, path);
+    getProgress(recipe[0], urlId, path);
     setFavorite(!favoriteState);
   };
 
-  const favoriteButton = (isfavorite) => {
-    if (isfavorite === false) {
-      return (<img src={ isFavorite } alt="Favorite BTN" data-testid="favorite-btn" />);
+  const favoriteButton = (fav) => {
+    if (fav === false) {
+      return (<img
+        src={ whiteHeartIcon }
+        alt="Favorite BTN"
+        data-testid="favorite-btn"
+      />);
     }
-    if (isfavorite === true) {
-      return (<img src={ notFavorite } alt="Favorite BTN" data-testid="favorite-btn" />);
+    if (fav === true) {
+      return (<img
+        src={ blackHeartIcon }
+        alt="Favorite BTN"
+        data-testid="favorite-btn"
+      />);
     }
   };
 
   const handleShare = () => {
-    const url = pathname.replace('/in-progress', '');
-    copy(`http://localhost:3000${url}`);
+    if (pageActual === 'Meal') {
+      copy(`http://localhost:3000/foods/${urlId}`);
+    }
+    if (pageActual === 'Drink') {
+      copy(`http://localhost:3000/drinks/${urlId}`);
+    }
     setCopy({ copyed: true });
     setTimeout(() => setCopy(false), Number('2000'));
   };
 
   const setCheckBox = ({ target }) => {
+    const check = document.getElementsByName(target.id);
     if (target.checked === true) {
-      setMarked((prev) => ({ marked: !prev.favoriteState.marked }));
+      check[0].className = 'marked';
       if (checksState.includes(target.id)) {
-        const rmvCheck = checks.filter((elm) => elm !== target.id);
+        const rmvCheck = checksState.filter((elm) => elm !== target.id);
         setchecks(rmvCheck);
+      } else {
+        setchecks([...checksState, target.id]);
       }
-      setchecks([...checksState, target.id]);
     }
-
-    const rmvCheck = checksState.filter((elm) => elm !== target.id);
-    setchecks(rmvCheck);
-    setMarked((prev) => ({ marked: !prev.favoriteState.marked }));
+    if (target.checked === false) {
+      check[0].className = '';
+      const rmvCheck = checksState.filter((elm) => elm !== target.id);
+      setchecks(rmvCheck);
+    }
   };
 
-  const habilitCheckBox = () => {
-    setMarked((prev) => ({ marked: !prev.favoriteState.marked }));
-    // localStorage.setItem('inProgressRecipes', recipe);
-    const arrCheck = localStorage.getItem('CheckBoxIds');
-    const checkList = JSON.parse(arrCheck);
+  const habilitFinishBTN = () => {
+    const arrCheck = localStorage.getItem('favoriteRecipes');
+    const checkList = JSON.parse(arrCheck) ? JSON.parse(arrCheck) : [];
     if (checkList.length === ingredientState.length - 1) {
       setFinish({ isDisabled: false });
     }
-
     setFinish({ isDisabled: true });
   };
 
@@ -146,14 +172,12 @@ function RecipeInProgress({ pageActual }) {
   };
 
   const { redirect } = redirectState;
-  const { marked } = markedState;
   const { isDisabled } = finishState;
   const { copyed } = copyState;
   const { recipe } = recipeState;
-  const { containerInProgress, imgInProgress } = style;
 
   return (
-    <div className={ containerInProgress }>
+    <div className="containerInProgress">
       aqui
       {
         recipe[0] !== undefined
@@ -172,7 +196,7 @@ function RecipeInProgress({ pageActual }) {
               }
               alt="recipePhoto"
               data-testid="recipe-photo"
-              className={ imgInProgress }
+              className="imgInProgress"
             />
             { copyed && (<h1>Link copied!</h1>)}
             <button
@@ -183,41 +207,25 @@ function RecipeInProgress({ pageActual }) {
             </button>
             <button
               type="button"
-              onClick={ makeFave }
+              onClick={ () => makeFave() }
             >
               { favoriteButton(favoriteState) }
             </button>
             <span data-testid="recipe-category">{recipe[0].strCategory}</span>
-            {
-              ingredientState.map((ing, index) => (
-                (marked === true) ? (
-                  <div data-testid={ `${index}-ingredient-step` }>
-                    <s name={ index }>{`${measureState[index]}, ${ing}`}</s>
+            <ul>
+              {ingredientState.map((ing, index) => (
+                <li data-testid={ `${index}-ingredient-step` } key={ index }>
+                  <input
+                    type="checkbox"
+                    onChange={ () => habilitFinishBTN() }
+                    onClick={ (e) => setCheckBox(e) }
+                    id={ index }
+                  />
+                  <p name={ index } className="">{`${measureState[index]}, ${ing}`}</p>
+                </li>
 
-                    <input
-                      type="checkbox"
-                      value={ marked }
-                      onChange={ () => habilitCheckBox() }
-                      onClick={ () => setCheckBox() }
-                      id={ index }
-                    />
-
-                  </div>
-                ) : (
-                  <div data-testid={ `${index}-ingredient-step` }>
-                    <p name={ index }>{`${measureState[index]}, ${ing}`}</p>
-
-                    <input
-                      type="checkbox"
-                      value={ marked }
-                      onChange={ () => habilitCheckBox() }
-                      onClick={ () => setCheckBox() }
-                      id={ index }
-                    />
-                  </div>
-                )
-              ))
-            }
+              ))}
+            </ul>
             <span data-testid="instructions">{recipe[0].strInstructions}</span>
             <button
               type="button"
@@ -225,7 +233,7 @@ function RecipeInProgress({ pageActual }) {
               disabled={ isDisabled }
               onClick={ () => toggleFinish() }
             >
-              FINISH
+              Finish Recipe
             </button>
           </div>
         )

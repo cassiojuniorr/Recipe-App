@@ -2,7 +2,7 @@ const toggleFavorite = (recipe, id, page) => {
   const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
     ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
 
-  const filterFavorite = favoriteStore !== false
+  const filterFavorite = (favoriteStore !== false)
     ? favoriteStore.filter((elm) => elm.id === id) : [];
 
   if (filterFavorite.length === 0) {
