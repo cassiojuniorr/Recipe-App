@@ -1,4 +1,4 @@
-const toggleFavorite = (recipe, id, page) => {
+const toggleFavorite = (recipe, id, page, bool) => {
   const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
     ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
 
@@ -19,9 +19,10 @@ const toggleFavorite = (recipe, id, page) => {
 
     localStorage.setItem('favoriteRecipes', JSON.stringify([...favoriteStore, objFav]));
   }
-
-  const rmvFav = favoriteStore.filter((rcp) => rcp.id !== id);
-  localStorage.setItem('favoriteRecipes', JSON.stringify(rmvFav));
+  if (bool === true && filterFavorite.length !== 0) {
+    const rmvFav = favoriteStore.filter((rcp) => rcp.id !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(rmvFav));
+  }
 };
 
 export default toggleFavorite;
