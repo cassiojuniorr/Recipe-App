@@ -1,6 +1,7 @@
 import React from 'react';
 
-function FoodsId() {
+function FoodsId(props) {
+  console.log(props);
   return (
     <div>
       <hi>Foods Id</hi>

@@ -7,7 +7,9 @@ const getProgress = (Ingredient, id, page, bool) => {
 
   if (filterProgress.length === 0) {
     const objProgress = {
+
       [id]: [Ingredient],
+
     };
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(
