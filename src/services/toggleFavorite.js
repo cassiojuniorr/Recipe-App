@@ -8,7 +8,7 @@ const toggleFavorite = (recipe, id, page, bool) => {
   if (filterFavorite.length === 0) {
     const objFav = {
       id,
-      type: page,
+      type: page.split('s')[0],
       nationality: recipe.strArea ? recipe.strArea : '',
       category: recipe.strCategory ? recipe.strCategory : '',
       alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',

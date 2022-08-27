@@ -10,7 +10,7 @@ const saveDoneRecipes = (recipe, id, page) => {
   if (doneFilter.length === 0) {
     const objDone = {
       id,
-      type: (page === 'Meal') ? 'foods' : 'drink',
+      type: (page === 'Meal') ? 'food' : 'drink',
       nationality: recipe.strArea ? recipe.strArea : '',
       category: recipe.strCategory ? recipe.strCategory : '',
       alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
@@ -18,14 +18,10 @@ const saveDoneRecipes = (recipe, id, page) => {
       image: recipe.strMealThumb
         ? recipe.strMealThumb : recipe.strDrinkThumb,
       data,
-      tags: recipe.strTags,
+      tags: [recipe.strTags],
     };
     localStorage.setItem('doneRecipes', JSON.stringify([...doneStore, objDone]));
   }
-  // if (bool === false && doneFilter.length !== 0) {
-  //   const rmvDone = doneFilter.filter((elm) => elm.id !== id);
-  //   localStorage.setItem('doneRecipes', JSON.stringify(rmvDone));
-  // }
 };
 
 export default saveDoneRecipes;

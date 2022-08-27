@@ -1,0 +1,41 @@
+import React from 'react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
+import App from '../App';
+
+describe('Teste Foods In Progress', () => {
+  it('Testando Inputs', () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+    history.push('/foods/52977/in-progress');
+    const titile = screen.getByTestId('data-testid="recipe-title');
+    const picture = screen.getByTestId('recipe-photo');
+    const shareBtn = screen.getByTestId('share-btn');
+    const favoriteBtn = screen.getByTestId('favorite-btn');
+    const category = screen.getByTestId('recipe-category');
+    const ingredients = screen.getAllByRole('input');
+    const instructions = screen.getByTestId('instructions');
+    const finishBtn = screen.getByTestId('finish-recipe-btn');
+    expect(titile).toBeDefined();
+    expect(picture.src).toBe('https://www.themealdb.com/images/media/meals/58oia61564916529.jpg');
+    userEvent.click(shareBtn);
+    expect(screen.getByText(/Link copied!/i)).toBeDefined();
+    userEvent.click(favoriteBtn);
+    userEvent.click(ingredients[0]);
+    userEvent.click(ingredients[1]);
+    userEvent.click(ingredients[2]);
+    userEvent.click(ingredients[3]);
+    userEvent.click(ingredients[4]);
+    userEvent.click(ingredients[5]);
+    userEvent.click(ingredients[6]);
+    userEvent.click(ingredients[7]);
+    userEvent.click(ingredients[8]);
+    userEvent.click(ingredients[9]);
+    userEvent.click(ingredients[10]);
+    userEvent.click(ingredients[11]);
+    userEvent.click(ingredients[12]);
+    expect(category).toBeDefined();
+    expect(instructions).toBeDefined();
+    userEvent.click(finishBtn);
+  });
+});

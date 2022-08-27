@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -10,6 +10,7 @@ import { takeRecipe } from '../services/fetchApi';
 import saveDoneRecipes from '../services/saveDoneRecipes';
 import toggleFavorite from '../services/toggleFavorite';
 import getProgress from '../services/getProgress';
+import getIngredientsOrMeasure from '../services/getIngredientsOrMeasure';
 
 const copy = require('clipboard-copy');
 
@@ -20,17 +21,11 @@ function RecipeInProgress({ pageActual, recipeId }) {
   const path = pathWithBars[1];
   const urlId = pathname.replace(/\D/g, '');
 
-  // referência https://backefront.com.br/como-usar-useparams-react/
-  // const { idPost } = useParams();
-
   const [recipeState, setRecipe] = useState({ recipe: [] });
   const [ingredientState, setIngredient] = useState([]);
   const [measureState, setMeasure] = useState([]);
   const [favoriteState, setFavorite] = useState(false);
-  const [checksState, setchecks] = useState([]);
-  const [checkedState, setChecked] = useState(false);
-  const [checksIdState, setchecksId] = useState({ id: [] });
-  const [finishState, setFinish] = useState(true);
+  const [finishState, setFinish] = useState(0);
   const [copyState, setCopy] = useState({ copyed: false });
 
   useEffect(() => {
@@ -54,18 +49,15 @@ function RecipeInProgress({ pageActual, recipeId }) {
   const getIngredients = () => {
     const { recipe } = recipeState;
 
-    const ingredients = recipe.length !== 0 ? Object.keys(recipe[0])
-      .filter((elm) => elm.includes('strIngredient')) : [];
+    const ingredients = recipe.length !== 0
+      ? getIngredientsOrMeasure(recipe[0], 'Ingredient')
+        .filter((elm) => typeof elm === 'string' && elm.length > 0) : [];
 
-    const measuteI = recipe.length !== 0 ? Object.keys(recipe[0])
-      .filter((key) => key.includes('strMeasute')) : [];
+    const measures = recipe.length !== 0 ? getIngredientsOrMeasure(recipe[0], 'Measure')
+      .filter((elm) => typeof elm === 'string' && elm.length > 0) : [];
 
-    const filterIngredients = ingredients
-      .filter((elm) => (recipe[0][elm] !== null))
-      .filter((i) => recipe[0][i].length !== 0);
-
-    setIngredient(filterIngredients);
-    setMeasure(measuteI);
+    setIngredient(ingredients);
+    setMeasure(measures);
   };
 
   useEffect(() => { getIngredients(); }, [recipeState]);
@@ -97,36 +89,51 @@ function RecipeInProgress({ pageActual, recipeId }) {
 
   const setCheckBox = ({ target }) => {
     const check = document.getElementsByName(target.id);
-    setChecked(!checkedState);
     getProgress(ingredientState[target.id],
       urlId, pageActual.toLowerCase(), target.checked);
     if (target.checked === true) {
-      setchecksId({ id: [...checksIdState.id, ingredientState[target.id]] });
       check[0].className = 'marked';
-      if (checksState.includes(target.id)) {
-        const rmvCheck = checksState.filter((elm) => elm !== target.id);
-        setchecks(rmvCheck);
-      } else {
-        setchecks([...checksState, target.id]);
-      }
     }
     if (target.checked === false) {
       check[0].className = '';
-      const rmvCheck = checksState.filter((elm) => elm !== target.id);
-      const filterProgress = checksIdState.id.filter((pro) => pro !== target.id);
-      setchecks(rmvCheck);
-      setchecksId({ id: [filterProgress] });
     }
   };
 
-  const habilitFinishBTN = () => {
-    const checkList = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
-      ? JSON.parse(localStorage.getItem('inProgressRecipes')) : [];
+  const checkedOn = (ingredient) => {
+    const key = (pageActual === 'Meal') ? 'meals' : 'cocktails';
+    if (pageActual === 'Meal') {
+      const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
+        ? JSON.parse(localStorage.getItem('inProgressRecipes'))
+        : { cocktails: {}, meals: { [recipeId]: [] } };
 
-    if (checkList.length === ingredientState.length) {
-      setFinish(false);
+      const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
+      // if (bool) {
+      //   setFinish((prevFinish) => prevFinish + 1);
+      // } else {
+      //   setFinish((prevFinish) => prevFinish - 1);
+      // }
+      return bool;
+    }
+    if (pageActual === 'Drink') {
+      const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
+        ? JSON.parse(localStorage.getItem('inProgressRecipes'))
+        : { cocktails: { [recipeId]: [] }, meals: {} };
+
+      const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
+      // if (bool) {
+      //   setFinish((prevFinish) => prevFinish + 1);
+      // } else {
+      //   setFinish((prevFinish) => prevFinish - 1);
+      // }
+      return bool;
+    }
+  };
+
+  const habilitFinishBTN = ({ target }) => {
+    if (target.checked === true) {
+      setFinish((prevFinish) => prevFinish + 1);
     } else {
-      setFinish(true);
+      setFinish((prevFinish) => prevFinish - 1);
     }
   };
 
@@ -178,14 +185,14 @@ function RecipeInProgress({ pageActual, recipeId }) {
                 <li data-testid={ `${index}-ingredient-step` } key={ index }>
                   <input
                     type="checkbox"
-                    onChange={ () => habilitFinishBTN() }
+                    checked={ checkedOn(ing) }
+                    onChange={ habilitFinishBTN }
                     onClick={ (e) => setCheckBox(e) }
                     id={ index }
-                    value={ checkedState }
                   />
                   <p
                     name={ index }
-                    className=""
+                    className={ checkedOn(ing) ? 'marked' : '' }
                     id={ index }
                   >
                     {`${measureState[index]}, ${ing}`}
@@ -198,7 +205,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
             <button
               type="button"
               data-testid="finish-recipe-btn"
-              disabled={ finishState }
+              disabled={ (ingredientState.length !== finishState) }
               onClick={ () => toggleFinish() }
             >
               Finish Recipe

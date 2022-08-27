@@ -1,31 +1,52 @@
 const getProgress = (ingredient, id, page, bool) => {
   const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
-    ? JSON.parse(localStorage.getItem('inProgressRecipes')) : [];
+    ? JSON.parse(localStorage.getItem('inProgressRecipes'))
+    : { cocktails: {}, meals: {} };
 
-  const filterProgress = (progressStore !== false)
-    ? progressStore.filter((elm) => elm.id === id) : [];
-
-  if (page === 'meal' && filterProgress.length === 0 && bool === true) {
-    const objProgressMeal = {
-      meals: { [id]: [ingredient] },
-    };
-    localStorage.setItem('inProgressRecipes', JSON.stringify(
-      [...progressStore, objProgressMeal],
-    ));
+  if (page === 'meal' && bool === true) {
+    if (Object.keys(progressStore.meals).includes(id) === false) {
+      const obj = { ...progressStore.meals, [id]: [ingredient] };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(
+        { ...progressStore, meals: obj },
+      ));
+    } else {
+      localStorage.setItem('inProgressRecipes', JSON.stringify(
+        { ...progressStore,
+          meals: {
+            ...progressStore.meals,
+            [id]: [...progressStore.meals[id], ingredient] },
+        },
+      ));
+    }
+  }
+  if (page === 'drink' && bool === true) {
+    if (Object.keys(progressStore.cocktails).includes(id) === false) {
+      const obj = { ...progressStore.cocktails, [id]: [ingredient] };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(
+        { ...progressStore, cocktails: obj },
+      ));
+    } else {
+      localStorage.setItem('inProgressRecipes', JSON.stringify(
+        { ...progressStore,
+          cocktails: {
+            ...progressStore.cocktails,
+            [id]: [...progressStore.cocktails[id], ingredient] },
+        },
+      ));
+    }
   }
 
-  if (page === 'drink' && filterProgress.length === 0 && bool === true) {
-    const objProgressDrink = {
-      cocktails: { [id]: [ingredient] },
-    };
+  if (page === 'meal' && bool === false) {
+    const rmvProg = progressStore.meals[id].filter((ing) => ing !== ingredient);
     localStorage.setItem('inProgressRecipes', JSON.stringify(
-      [...progressStore, objProgressDrink],
+      { ...progressStore, meals: { ...progressStore.meals, [id]: rmvProg } },
     ));
   }
-
-  if (bool === true && filterProgress.length !== 0) {
-    const rmvProg = progressStore.filter((ing) => ing.page.id !== id);
-    localStorage.setItem('inProgressRecipes', JSON.stringify(rmvProg));
+  if (page === 'drink' && bool === false) {
+    const rmvProg = progressStore.cocktails[id].filter((ing) => ing !== ingredient);
+    localStorage.setItem('inProgressRecipes', JSON.stringify(
+      { ...progressStore, cocktails: { ...progressStore.cocktails, [id]: rmvProg } },
+    ));
   }
 };
 
