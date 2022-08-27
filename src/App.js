@@ -19,12 +19,18 @@ function App() {
         <Route exact path="/" component={ Login } />
 
         <Route exact path="/foods" component={ Foods } />
-        <Route path="/foods/:recipeId" component={ FoodsId } />
-        <Route path="/foods/:recipeId/in-progress" component={ FoodsIdInProgress } />
+        <Route exact path="/foods/:recipeId" component={ FoodsId } />
+        <Route
+          path="/foods/:recipeId/in-progress"
+          component={ FoodsIdInProgress }
+        />
 
         <Route exact path="/drinks" component={ Drinks } />
-        <Route path="/drinks/:recipeId" component={ DrinksId } />
-        <Route path="/drinks/:recipeId/in-progress" component={ DrinksIdInProgress } />
+        <Route exact path="/drinks/:recipeId" component={ DrinksId } />
+        <Route
+          path="/drinks/:recipeId/in-progress"
+          component={ DrinksIdInProgress }
+        />
 
         <Route exact path="/profile" component={ Profile } />
         <Route exact path="/done-recipes" component={ DoneRecipes } />

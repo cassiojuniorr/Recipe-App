@@ -1,8 +1,11 @@
 import React from 'react';
 
-function FoodsId() {
+function FoodsId(props) {
+  console.log(props);
   return (
-    <div>foods id</div>
+    <div>
+      <hi>Foods Id</hi>
+    </div>
   );
 }
 
