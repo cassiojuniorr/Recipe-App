@@ -21,7 +21,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
   const urlId = pathname.replace(/\D/g, '');
 
   // referência https://backefront.com.br/como-usar-useparams-react/
-  const { idPost } = useParams();
+  // const { idPost } = useParams();
 
   const [recipeState, setRecipe] = useState({ recipe: [] });
   const [ingredientState, setIngredient] = useState([]);

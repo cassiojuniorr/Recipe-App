@@ -1,5 +1,5 @@
 import React from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import RecipeInProgress from '../components/RecipeInProgress';
 
 function FoodsIdInProgress({ match: { params: recipeId } }) {
@@ -11,12 +11,12 @@ function FoodsIdInProgress({ match: { params: recipeId } }) {
   );
 }
 
-FoodsIdInProgress.prototype = {
-  match: propTypes.shape({
-    params: propTypes.shape({
-      recipeId: propTypes.number.isRequired,
+FoodsIdInProgress.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      recipeId: PropTypes.string.isRequired,
     }),
-  }),
+  }).isRequired,
 };
 
 export default FoodsIdInProgress;
