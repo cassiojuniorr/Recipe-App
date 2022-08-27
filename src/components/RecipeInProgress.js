@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -68,21 +68,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
     setMeasure(measuteI);
   };
 
-  // useEffect(() => {
-  //   const checksStore = JSON.parse(localStorage.getItem('inProgressRecipes'))
-  //     ? JSON.parse(localStorage.getItem('inProgressRecipes')) : [];
-
-  //   checksStore.map((pro, i) => (
-  //     console.log(pro.meals[urlId][i] === ingredientState[i] ? ingredientState[i] : '')
-  //   ));
-
-  //   setChecked(
-  //     checksStore.some((pro, i) => (
-  //       pro.meals[urlId][i] === ingredientState[i]
-  //     )),
-  //   );
-  // }, [ingredientState]);
-
   useEffect(() => { getIngredients(); }, [recipeState]);
 
   const makeFave = () => {
@@ -146,7 +131,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
   };
 
   const toggleFinish = () => {
-    saveDoneRecipes(recipeState.recipe[0], idPost, pageActual);
+    saveDoneRecipes(recipeState.recipe[0], urlId, pageActual);
     history.push('/done-recipes');
   };
 

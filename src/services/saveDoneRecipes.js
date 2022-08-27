@@ -1,4 +1,4 @@
-const saveDoneRecipes = (recipe, id, page, bool) => {
+const saveDoneRecipes = (recipe, id, page) => {
   const doneStore = JSON.parse(localStorage.getItem('doneRecipes')) !== null
     ? JSON.parse(localStorage.getItem('doneRecipes')) : [];
 
@@ -10,7 +10,7 @@ const saveDoneRecipes = (recipe, id, page, bool) => {
   if (doneFilter.length === 0) {
     const objDone = {
       id,
-      type: page,
+      type: (page === 'Meal') ? 'foods' : 'drink',
       nationality: recipe.strArea ? recipe.strArea : '',
       category: recipe.strCategory ? recipe.strCategory : '',
       alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
@@ -22,10 +22,10 @@ const saveDoneRecipes = (recipe, id, page, bool) => {
     };
     localStorage.setItem('doneRecipes', JSON.stringify([...doneStore, objDone]));
   }
-  if (bool === false && doneFilter.length !== 0) {
-    const rmvDone = doneFilter.filter((elm) => elm.id !== id);
-    localStorage.setItem('doneRecipes', JSON.stringify(rmvDone));
-  }
+  // if (bool === false && doneFilter.length !== 0) {
+  //   const rmvDone = doneFilter.filter((elm) => elm.id !== id);
+  //   localStorage.setItem('doneRecipes', JSON.stringify(rmvDone));
+  // }
 };
 
 export default saveDoneRecipes;
