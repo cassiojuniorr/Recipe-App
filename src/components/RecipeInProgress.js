@@ -28,8 +28,9 @@ function RecipeInProgress({ pageActual, recipeId }) {
   const [measureState, setMeasure] = useState([]);
   const [favoriteState, setFavorite] = useState(false);
   const [checksState, setchecks] = useState([]);
-  const [finishState, setFinish] = useState({ isDisabled: true });
-  const [redirectState, setRedirect] = useState({ redirect: false });
+  const [checkedState, setChecked] = useState(false);
+  const [checksIdState, setchecksId] = useState({ id: [] });
+  const [finishState, setFinish] = useState(true);
   const [copyState, setCopy] = useState({ copyed: false });
 
   useEffect(() => {
@@ -38,6 +39,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
 
       setRecipe({ recipe: [recipe] });
     };
+
     const getLocalStorage = () => {
       const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
         ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
@@ -48,23 +50,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
     getLocalStorage();
     getRecipe();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(recipeId.recipeId);
-  // }, []);
-
-  // useEffect(() => {
-  //   const checks = localStorage.getItem('CheckBoxIds');
-  //   const checkList = JSON.parse(checks);
-  //   if (checkList[0] !== undefined || checkList[0] !== null) {
-  //     checkList.forEach((elm) => {
-  //       const check = document.getElementById(elm);
-  //       check.setAttribute('checked', true);
-  //       check.value = 'checked';
-  //       setMarked({ marked: true });
-  //     });
-  //   }
-  // }, [ingredientState]);
 
   const getIngredients = () => {
     const { recipe } = recipeState;
@@ -83,6 +68,21 @@ function RecipeInProgress({ pageActual, recipeId }) {
     setMeasure(measuteI);
   };
 
+  // useEffect(() => {
+  //   const checksStore = JSON.parse(localStorage.getItem('inProgressRecipes'))
+  //     ? JSON.parse(localStorage.getItem('inProgressRecipes')) : [];
+
+  //   checksStore.map((pro, i) => (
+  //     console.log(pro.meals[urlId][i] === ingredientState[i] ? ingredientState[i] : '')
+  //   ));
+
+  //   setChecked(
+  //     checksStore.some((pro, i) => (
+  //       pro.meals[urlId][i] === ingredientState[i]
+  //     )),
+  //   );
+  // }, [ingredientState]);
+
   useEffect(() => { getIngredients(); }, [recipeState]);
 
   const makeFave = () => {
@@ -91,26 +91,13 @@ function RecipeInProgress({ pageActual, recipeId }) {
     setFavorite(!favoriteState);
   };
 
-  const favoriteButton = (fav) => {
-    if (fav === false) {
-      return (
-        <img
-          src={ whiteHeartIcon }
-          alt="Favorite BTN"
-          data-testid="favorite-btn"
-        />
-      );
-    }
-    if (fav === true) {
-      return (
-        <img
-          src={ blackHeartIcon }
-          alt="Favorite BTN"
-          data-testid="favorite-btn"
-        />
-      );
-    }
-  };
+  const favoriteButton = (fav) => (
+    <img
+      src={ (fav === true) ? blackHeartIcon : whiteHeartIcon }
+      alt="Favorite BTN"
+      data-testid="favorite-btn"
+    />
+  );
 
   const handleShare = () => {
     if (pageActual === 'Meal') {
@@ -125,10 +112,12 @@ function RecipeInProgress({ pageActual, recipeId }) {
 
   const setCheckBox = ({ target }) => {
     const check = document.getElementsByName(target.id);
-    const { recipe } = recipeState;
+    setChecked(!checkedState);
+    getProgress(ingredientState[target.id],
+      urlId, pageActual.toLowerCase(), target.checked);
     if (target.checked === true) {
+      setchecksId({ id: [...checksIdState.id, ingredientState[target.id]] });
       check[0].className = 'marked';
-      getProgress(recipe[0], urlId, path, target.checked);
       if (checksState.includes(target.id)) {
         const rmvCheck = checksState.filter((elm) => elm !== target.id);
         setchecks(rmvCheck);
@@ -139,32 +128,33 @@ function RecipeInProgress({ pageActual, recipeId }) {
     if (target.checked === false) {
       check[0].className = '';
       const rmvCheck = checksState.filter((elm) => elm !== target.id);
+      const filterProgress = checksIdState.id.filter((pro) => pro !== target.id);
       setchecks(rmvCheck);
+      setchecksId({ id: [filterProgress] });
     }
   };
 
   const habilitFinishBTN = () => {
-    const arrCheck = localStorage.getItem('favoriteRecipes');
-    const checkList = JSON.parse(arrCheck) ? JSON.parse(arrCheck) : [];
-    if (checkList.length === ingredientState.length - 1) {
-      setFinish({ isDisabled: false });
+    const checkList = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
+      ? JSON.parse(localStorage.getItem('inProgressRecipes')) : [];
+
+    if (checkList.length === ingredientState.length) {
+      setFinish(false);
+    } else {
+      setFinish(true);
     }
-    setFinish({ isDisabled: true });
   };
 
   const toggleFinish = () => {
     saveDoneRecipes(recipeState.recipe[0], idPost, pageActual);
-    setRedirect({ redirect: true });
+    history.push('/done-recipes');
   };
 
-  const { redirect } = redirectState;
-  const { isDisabled } = finishState;
   const { copyed } = copyState;
   const { recipe } = recipeState;
 
   return (
     <div className="containerInProgress">
-      aqui
       {
         recipe[0] !== undefined
         && (
@@ -206,8 +196,15 @@ function RecipeInProgress({ pageActual, recipeId }) {
                     onChange={ () => habilitFinishBTN() }
                     onClick={ (e) => setCheckBox(e) }
                     id={ index }
+                    value={ checkedState }
                   />
-                  <p name={ index } className="">{`${measureState[index]}, ${ing}`}</p>
+                  <p
+                    name={ index }
+                    className=""
+                    id={ index }
+                  >
+                    {`${measureState[index]}, ${ing}`}
+                  </p>
                 </li>
 
               ))}
@@ -216,7 +213,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
             <button
               type="button"
               data-testid="finish-recipe-btn"
-              disabled={ isDisabled }
+              disabled={ finishState }
               onClick={ () => toggleFinish() }
             >
               Finish Recipe
@@ -224,12 +221,12 @@ function RecipeInProgress({ pageActual, recipeId }) {
           </div>
         )
       }
-      {redirect && <Redirect to="/done-recipes" />}
     </div>
   );
 }
 RecipeInProgress.propTypes = {
   pageActual: propTypes.string.isRequired,
+  recipeId: propTypes.string.isRequired,
 };
 
 export default connect(null, null)(RecipeInProgress);
