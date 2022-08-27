@@ -104,28 +104,30 @@ function RecipeInProgress({ pageActual, recipeId }) {
     if (pageActual === 'Meal') {
       const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
         ? JSON.parse(localStorage.getItem('inProgressRecipes'))
-        : { cocktails: {}, meals: { [recipeId]: [] } };
+        : { cocktails: {}, meals: {} };
 
-      const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
-      // if (bool) {
-      //   setFinish((prevFinish) => prevFinish + 1);
-      // } else {
-      //   setFinish((prevFinish) => prevFinish - 1);
-      // }
-      return bool;
+      if (Object.keys(progressStore.meals).includes(recipeId) === false) {
+        return false;
+      }
+      if (Object.keys(progressStore.meals).includes(recipeId) === true) {
+        const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
+
+        return bool;
+      }
     }
     if (pageActual === 'Drink') {
       const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
         ? JSON.parse(localStorage.getItem('inProgressRecipes'))
-        : { cocktails: { [recipeId]: [] }, meals: {} };
+        : { cocktails: {}, meals: {} };
 
-      const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
-      // if (bool) {
-      //   setFinish((prevFinish) => prevFinish + 1);
-      // } else {
-      //   setFinish((prevFinish) => prevFinish - 1);
-      // }
-      return bool;
+      if (Object.keys(progressStore.cocktails).includes(recipeId) === false) {
+        return false;
+      }
+      if (Object.keys(progressStore.cocktails).includes(recipeId) === true) {
+        const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
+
+        return bool;
+      }
     }
   };
 

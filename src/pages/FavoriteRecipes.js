@@ -13,7 +13,7 @@ class FavoriteRecipes extends React.Component {
   searchByBarOn = () => {}
 
   render() {
-    console.log(this.searchByBarOn());
+    this.searchByBarOn();
     return (
       <div>
         <Header title="Favorite Recipes" searchByBarOn={ this.searchByBarOn } />
