@@ -17,6 +17,7 @@ function DoneRecipes() {
       ? JSON.parse(localStorage.getItem('doneRecipes')) : [];
     setRecipe([...doneStore]);
   }, []);
+
   const filterFunc = ({ target: { name } }) => {
     if (name === 'allBtn') {
       setType('allBtn');
@@ -25,13 +26,16 @@ function DoneRecipes() {
     const typ = name === 'foodBtn' ? 'drink' : 'food';
     setType(typ);
   };
+
   const toggleShare = (type, id) => {
     copy(`${window.location.origin}/${type}s/${id}`);
     setCopy(true);
     setTimeout(() => setCopy(false), Number('2000'));
   };
+
   const searchByBarOn = () => {};
   searchByBarOn();
+
   const { containerDone, imgDone } = style;
   return (
     <div>
