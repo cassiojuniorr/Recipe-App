@@ -52,10 +52,10 @@ class RecipeDetails extends React.Component {
 
   initialize = async () => {
     const { detailsID, typeOfRequest } = this.state;
-    const DONE_RECIPE = localStorage.getItem('doneRecipes');
-    const IN_PROGRESS = localStorage.getItem('inProgressRecipes');
-    if (DONE_RECIPE === null) this.initializeLocalStoreKey('doneRecipes');
-    if (IN_PROGRESS === null) this.initializeLocalStoreKey('inProgressRecipes');
+    // const DONE_RECIPE = localStorage.getItem('doneRecipes');
+    // const IN_PROGRESS = localStorage.getItem('inProgressRecipes');
+    // if (DONE_RECIPE === null) this.initializeLocalStoreKey('doneRecipes');
+    // if (IN_PROGRESS === null) this.initializeLocalStoreKey('inProgressRecipes');
     const MAX_RECOMENDED_RECIPES = 6;
     const foodEndpoint = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${detailsID}`;
     const drinkEndpoint = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${detailsID}`;
@@ -144,12 +144,69 @@ class RecipeDetails extends React.Component {
     this.setState({ favoriteState: !favoriteState });
   };
 
+  test = () => {
+    const { typeOfRequest } = this.state;
+    const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+    const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
+    const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+    const TYPE2 = typeOfRequest === 'foods' ? 'meals' : 'cocktails';
+    const LOCALSTORAGE = JSON.parse(localStorage
+      .getItem('inProgressRecipes'));
+    console.log(LOCALSTORAGE);
+    // console.log(LOCALSTORAGE[TYPE2]);
+    // console.log(LOCALSTORAGE[TYPE2][recipe[TYPE[2]]]);
+  }
+
+  renderStartRecipe = () => {
+    let response = '';
+    console.log('alo');
+    const { recipe } = this.state;
+    const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+    const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
+    const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+    const TYPE2 = typeOfRequest === 'foods' ? 'meals' : 'cocktails';
+    if (localStorage.getItem('inProgressRecipes') !== null) {
+      const RECIPE_INPROGRESS = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      console.log(RECIPE_INPROGRESS[TYPE2][recipe[TYPE[2]]]);
+      console.log(RECIPE_INPROGRESS);
+      response = 'Continue Recipe';
+      //  ? 'Continue Recipe' : 'Start Recipe';
+    } else {
+      console.log('nulo');
+      response = 'Start Recipe';
+    }
+    return response;
+  }
+
+  renderStartRecipeBtn = () => {
+    const { recipe, typeOfRequest } = this.state;
+    const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+    const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
+    const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+    const callReturn = () => (
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        onClick={ this.handleStartRecipe }
+      >
+        { this.renderStartRecipe }
+      </button>
+    );
+    if (localStorage.getItem('doneRecipes') !== null
+      && !localStorage.getItem('doneRecipes').includes(recipe[TYPE[2]])) {
+      return callReturn;
+    }
+    if (localStorage.getItem('doneRecipes') === null) return callReturn;
+  }
+
   renderRecipe = () => {
+    this.test();
     const { recipe, typeOfRequest, recomendedRecipes, copyed,
       favoriteState } = this.state;
     const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
     const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
     const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+    const TYPE2 = typeOfRequest === 'foods' ? 'meals' : 'cocktails';
     if (Object.keys(recipe).length > 0) {
       const INGREDIENTS_VALUES = typeOfRequest === 'foods' ? this.renderWithFood()
         : this.renderWithDrink();
@@ -179,16 +236,21 @@ class RecipeDetails extends React.Component {
               { recipe.strInstructions }
             </p>
             { typeOfRequest === 'foods' && (
-              <video>
-                <track
-                  kind="captions"
-                  src={ recipe.strYoutube }
-                />
-              </video>
+              <iframe
+                width="300"
+                height="300"
+                src={ `https://www.youtube.com/embed/${
+                  recipe.strYoutube?.split('=')[1]
+                  // recipeData.strYoutube?.split('=')[1]
+                }` }
+                title={ recipe.strMeal }
+                data-testid="video"
+              />
             )}
             <div>
               { recomendedRecipes.map((RecRec, index) => (
                 <RecomendationRecipeCard
+                  index={ index }
                   key={ index }
                   data={ RecRec }
                   typeOfRequest={ typeOfRequest }
@@ -212,18 +274,7 @@ class RecipeDetails extends React.Component {
               { this.favoriteButton(favoriteState) }
             </button>
           </div>
-          { !localStorage.getItem('doneRecipes').includes(recipe[TYPE[2]]) && (
-            <button
-              type="button"
-              data-testid="start-recipe-btn"
-              onClick={ this.handleStartRecipe }
-            >
-              {
-                localStorage.getItem('inProgressRecipes').includes(recipe[TYPE[2]])
-                  ? 'Continue Recipe' : 'Start Recipe'
-              }
-            </button>
-          ) }
+          { this.renderStartRecipeBtn }
         </>
       );
     }
