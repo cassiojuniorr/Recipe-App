@@ -3,7 +3,7 @@ import React from 'react';
 function FoodsId() {
   return (
     <div>
-      <hi>Foods Id</hi>
+      Foods Id
     </div>
   );
 }

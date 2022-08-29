@@ -8,7 +8,7 @@ class Profile extends React.Component {
   searchByBarOn = () => {}
 
   render() {
-    console.log(this.searchByBarOn());
+    this.searchByBarOn();
     return (
       <div>
         <Header title="Profile" searchByBarOn={ this.searchByBarOn } />

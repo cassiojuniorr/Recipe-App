@@ -31,6 +31,7 @@ function DoneRecipes() {
     setTimeout(() => setCopy(false), Number('2000'));
   };
   const searchByBarOn = () => {};
+  searchByBarOn();
   const { containerDone, imgDone } = style;
   return (
     <div>
