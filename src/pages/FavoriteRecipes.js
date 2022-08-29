@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import toggleFavorite from '../services/toggleFavorite';
 import style from '../styles/favoriteRecipes.module.scss';
 
 const copy = require('clipboard-copy');
