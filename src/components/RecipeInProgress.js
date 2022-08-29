@@ -107,11 +107,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
         : { cocktails: {}, meals: { [recipeId]: [] } };
 
       const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
-      // if (bool) {
-      //   setFinish((prevFinish) => prevFinish + 1);
-      // } else {
-      //   setFinish((prevFinish) => prevFinish - 1);
-      // }
       return bool;
     }
     if (pageActual === 'Drink') {
@@ -120,11 +115,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
         : { cocktails: { [recipeId]: [] }, meals: {} };
 
       const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
-      // if (bool) {
-      //   setFinish((prevFinish) => prevFinish + 1);
-      // } else {
-      //   setFinish((prevFinish) => prevFinish - 1);
-      // }
       return bool;
     }
   };
@@ -188,6 +178,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
                     checked={ checkedOn(ing) }
                     onChange={ habilitFinishBTN }
                     onClick={ (e) => setCheckBox(e) }
+                    data-testid={ `${index}-check-box` }
                     id={ index }
                   />
                   <p
