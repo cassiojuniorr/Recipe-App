@@ -1,11 +1,12 @@
 import React from 'react';
+import RecipeDetails from '../components/RecipeDetails';
 
-function DrinksId() {
-  return (
-    <div>
-      DrinksId
-    </div>
-  );
+class DrinksId extends React.Component {
+  render() {
+    return (
+      <RecipeDetails { ...this.props } />
+    );
+  }
 }
 
 export default DrinksId;
