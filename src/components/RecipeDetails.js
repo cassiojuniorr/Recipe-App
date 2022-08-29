@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RecomendationRecipeCard from './RecomendationRecipeCard';
+import shareIcon from '../images/shareIcon.svg';
+import toggleFavorite from '../services/toggleFavorite';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+
+const copy = require('clipboard-copy');
 
 class RecipeDetails extends React.Component {
   constructor() {
@@ -10,12 +16,25 @@ class RecipeDetails extends React.Component {
       recomendedRecipes: [],
       detailsID: '',
       typeOfRequest: '',
+      copyed: false,
+      favoriteState: false,
     };
   }
 
   componentDidMount() {
     this.getInfo();
   }
+
+  getLocalStorage = () => {
+    const { recipe, typeOfRequest } = this.state;
+    const TYPE = typeOfRequest === 'foods' ? 'idMeal' : 'idDrink';
+    const recipeId = recipe[TYPE];
+    const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
+      ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
+
+    this.setState({ favoriteState: favoriteStore.some((rcp) => rcp.id
+      === recipeId) });
+  };
 
   getInfo = () => {
     const { history } = this.props;
@@ -32,7 +51,6 @@ class RecipeDetails extends React.Component {
   }
 
   initialize = async () => {
-    // const { history } = this.props;
     const { detailsID, typeOfRequest } = this.state;
     const DONE_RECIPE = localStorage.getItem('doneRecipes');
     const IN_PROGRESS = localStorage.getItem('inProgressRecipes');
@@ -47,6 +65,7 @@ class RecipeDetails extends React.Component {
     const selectedTypeUrl2 = typeOfRequest === 'foods' ? drinkRecomended : foodRecomended;
     const newData = await this.fetchApi(selectedTypeUrl);
     this.setState({ recipe: newData[typeOfRequest === 'foods' ? 'meals' : 'drinks'][0] });
+    this.getLocalStorage();
     const recomendedLinks = await this.fetchApi(selectedTypeUrl2);
     const recomendedLinksCuted = await recomendedLinks[typeOfRequest === 'foods'
       ? 'drinks' : 'meals'].slice(0, MAX_RECOMENDED_RECIPES);
@@ -97,10 +116,39 @@ class RecipeDetails extends React.Component {
     history.push(typeOfRequest === 'foods' ? URL_FOOD : URL_DRINK);
   };
 
+  handleShare = () => {
+    const { recipe, typeOfRequest } = this.state;
+    if (typeOfRequest === 'foods') {
+      const urlId = recipe.idMeal;
+      copy(`http://localhost:3000/foods/${urlId}`);
+    } else {
+      const urlId = recipe.idDrink;
+      copy(`http://localhost:3000/drinks/${urlId}`);
+    }
+    this.setState({ copyed: true });
+    setTimeout(() => this.setState({ copyed: false }), Number('2000'));
+  };
+
+  favoriteButton = (fav) => (
+    <img
+      src={ (fav === true) ? blackHeartIcon : whiteHeartIcon }
+      alt="Favorite BTN"
+      data-testid="favorite-btn"
+    />
+  );
+
+  makeFave = () => {
+    const { recipe, typeOfRequest, favoriteState } = this.state;
+    const urlId = typeOfRequest === 'foods' ? recipe.idMeal : recipe.idDrink;
+    toggleFavorite(recipe, urlId, typeOfRequest, favoriteState);
+    this.setState({ favoriteState: !favoriteState });
+  };
+
   renderRecipe = () => {
-    const { recipe, typeOfRequest, recomendedRecipes } = this.state;
-    const FOOD_TYPE = ['strMeal', 'srtMealThumb', 'idMeal'];
-    const DRINK_TYPE = ['strDrink', 'srtDrinkThumb', 'idDrink'];
+    const { recipe, typeOfRequest, recomendedRecipes, copyed,
+      favoriteState } = this.state;
+    const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+    const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
     const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
     if (Object.keys(recipe).length > 0) {
       const INGREDIENTS_VALUES = typeOfRequest === 'foods' ? this.renderWithFood()
@@ -148,8 +196,21 @@ class RecipeDetails extends React.Component {
             </div>
           </div>
           <div>
-            <button type="button" data-testid="share-btn">Share</button>
-            <button type="button" data-testid="favorite-btn">Favorite</button>
+            { copyed && (<h1>Link copied!</h1>)}
+            <button
+              type="button"
+              data-testid="share-btn"
+              onClick={ this.handleShare }
+            >
+              <img src={ shareIcon } alt="share recipe" data-testid="share-btn" />
+            </button>
+            <button
+              type="button"
+              data-testid="favorite-btn"
+              onClick={ this.makeFave }
+            >
+              { this.favoriteButton(favoriteState) }
+            </button>
           </div>
           { !localStorage.getItem('doneRecipes').includes(recipe[TYPE[2]]) && (
             <button
