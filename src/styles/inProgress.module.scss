@@ -1,8 +1,71 @@
-.containerInProgress {
-  padding: 50px;
-}
+@use 'variables' as *;
+@use 'mixins' as *;
 
-.imgInProgress {
-  width: 300px;
+.containerInProgress {
+  @include center;
+  padding: 26px;
+  flex-flow: column nowrap;
+  justify-content: center;
+
+  .titileFood {
+    color: $secondary-color;
+    font-size: 42px;
+  }
+  .imgInProgress {
+    width: 300px;
+    border-radius: 44px 4px;
+    border: 1px solid transparent;
+    border-style:solid;
+    border-width: 1px;
+    border-color:#f18900;
+    box-shadow: 0px 0px 15px #f18900;
+  }
+  
+  .btnShare {
+    border: 0px;
+    background: none;
+    margin-top: 12px;
+    margin-right: 24px;
+  }
+
+  .btnFav {
+    border: 0px;
+    background: none;
+  }
+
+  .categoryProgress {
+    color: $secondary-color;
+    font-size: 24px;
+  }
+
+  .wrapIngredients {
+    @include center;
+    flex-flow: column nowrap;
+    justify-content: center;
+    .ingredients {
+      @include center;
+      flex-flow: row wrap;
+      justify-content: center;
+      .intpIngredient {
+        margin-bottom: 18px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .btnFinish {
+    border: 1px solid $secondary-color;
+    color: $primary-color;
+    padding: 4px 14px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), #FF8800);
+  }
+
+  .btnFinish:hover {
+    border: 1px solid $secondary-color;
+    color: $primary-color;
+    padding: 4px 14px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), #dd7600);
+  }
+
 }
 

@@ -32,43 +32,33 @@ function RecipeInProgress({ pageActual, recipeId }) {
   useEffect(() => {
     const getRecipe = async () => {
       const recipe = await takeRecipe(pageActual, recipeId);
-
       setRecipe({ recipe: [recipe] });
     };
-
     const getLocalStorage = () => {
       const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
         ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
 
       setFavorite(favoriteStore.some((recipe) => recipe.id === recipeId));
     };
-
     getLocalStorage();
     getRecipe();
   }, []);
-
   const getIngredients = () => {
     const { recipe } = recipeState;
-
     const ingredients = recipe.length !== 0
       ? getIngredientsOrMeasure(recipe[0], 'Ingredient')
         .filter((elm) => typeof elm === 'string' && elm.length > 0) : [];
-
     const measures = recipe.length !== 0 ? getIngredientsOrMeasure(recipe[0], 'Measure')
       .filter((elm) => typeof elm === 'string' && elm.length > 0) : [];
-
     setIngredient(ingredients);
     setMeasure(measures);
   };
-
   useEffect(() => { getIngredients(); }, [recipeState]);
-
   const makeFave = () => {
     const { recipe } = recipeState;
     toggleFavorite(recipe[0], urlId, path, favoriteState);
     setFavorite(!favoriteState);
   };
-
   const favoriteButton = (fav) => (
     <img
       src={ (fav === true) ? blackHeartIcon : whiteHeartIcon }
@@ -76,7 +66,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
       data-testid="favorite-btn"
     />
   );
-
   const handleShare = () => {
     if (pageActual === 'Meal') {
       copy(`http://localhost:3000/foods/${urlId}`);
@@ -87,7 +76,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
     setCopy({ copyed: true });
     setTimeout(() => setCopy(false), Number('2000'));
   };
-
   const setCheckBox = ({ target }) => {
     const check = document.getElementsByName(target.id);
     getProgress(ingredientState[target.id],
@@ -99,20 +87,17 @@ function RecipeInProgress({ pageActual, recipeId }) {
       check[0].className = '';
     }
   };
-
   const checkedOn = (ingredient) => {
     const key = (pageActual === 'Meal') ? 'meals' : 'cocktails';
     if (pageActual === 'Meal') {
       const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
         ? JSON.parse(localStorage.getItem('inProgressRecipes'))
         : { cocktails: {}, meals: {} };
-
       if (Object.keys(progressStore.meals).includes(recipeId) === false) {
         return false;
       }
       if (Object.keys(progressStore.meals).includes(recipeId) === true) {
         const bool = progressStore[key][recipeId].some((ing) => ingredient === ing);
-
         return bool;
       }
     }
@@ -131,7 +116,6 @@ function RecipeInProgress({ pageActual, recipeId }) {
       }
     }
   };
-
   const habilitFinishBTN = ({ target }) => {
     if (target.checked === true) {
       setFinish((prevFinish) => prevFinish + 1);
@@ -139,23 +123,34 @@ function RecipeInProgress({ pageActual, recipeId }) {
       setFinish((prevFinish) => prevFinish - 1);
     }
   };
-
   const toggleFinish = () => {
     saveDoneRecipes(recipeState.recipe[0], urlId, pageActual);
     history.push('/done-recipes');
   };
-
   const { copyed } = copyState;
   const { recipe } = recipeState;
-  const { containerInProgress, imgInProgress } = style;
+  const {
+    containerInProgress,
+    imgInProgress,
+    titileFood,
+    btnShare,
+    btnFav,
+    categoryProgress,
+    wrapIngredients,
+    ingredients,
+    intpIngredient,
+    btnFinish } = style;
 
   return (
-    <div className={ containerInProgress }>
+    <div>
       {
         recipe[0] !== undefined
         && (
-          <div key={ (pageActual === 'Meal') ? recipe[0].idMeal : recipe[0].idDrink }>
-            <h1 data-testid="recipe-title">
+          <div
+            key={ (pageActual === 'Meal') ? recipe[0].idMeal : recipe[0].idDrink }
+            className={ containerInProgress }
+          >
+            <h1 data-testid="recipe-title" className={ titileFood }>
               {(pageActual === 'Meal')
                 ? recipe[0].strMeal
                 : recipe[0].strDrink}
@@ -170,23 +165,36 @@ function RecipeInProgress({ pageActual, recipeId }) {
               data-testid="recipe-photo"
               className={ imgInProgress }
             />
-            { copyed && (<h1>Link copied!</h1>)}
-            <button
-              type="button"
-              onClick={ handleShare }
+            { copyed && (<h1 className={ titileFood }>Link copied!</h1>)}
+            <div>
+              <button
+                type="button"
+                onClick={ handleShare }
+                className={ btnShare }
+              >
+                <img src={ shareIcon } alt="share recipe" data-testid="share-btn" />
+              </button>
+              <button
+                type="button"
+                onClick={ () => makeFave() }
+                className={ btnFav }
+              >
+                { favoriteButton(favoriteState) }
+              </button>
+            </div>
+            <span
+              data-testid="recipe-category"
+              className={ categoryProgress }
             >
-              <img src={ shareIcon } alt="share recipe" data-testid="share-btn" />
-            </button>
-            <button
-              type="button"
-              onClick={ () => makeFave() }
-            >
-              { favoriteButton(favoriteState) }
-            </button>
-            <span data-testid="recipe-category">{recipe[0].strCategory}</span>
-            <ul>
+              {recipe[0].strCategory}
+            </span>
+            <ul className={ wrapIngredients }>
               {ingredientState.map((ing, index) => (
-                <li data-testid={ `${index}-ingredient-step` } key={ index }>
+                <li
+                  data-testid={ `${index}-ingredient-step` }
+                  key={ index }
+                  className={ ingredients }
+                >
                   <input
                     type="checkbox"
                     checked={ checkedOn(ing) }
@@ -194,6 +202,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
                     onClick={ (e) => setCheckBox(e) }
                     data-testid={ `${index}-check-box` }
                     id={ index }
+                    className={ intpIngredient }
                   />
                   <p
                     name={ index }
@@ -212,6 +221,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
               data-testid="finish-recipe-btn"
               disabled={ (ingredientState.length !== finishState) }
               onClick={ () => toggleFinish() }
+              className={ btnFinish }
             >
               Finish Recipe
             </button>

@@ -2,9 +2,9 @@
 @use 'mixins' as *;
 
 .containerDone {
-    margin-top: 100px;
     padding: 50px;
     color: black;
+    @include center;
 }
 
 .imgDone {
