@@ -2,6 +2,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
+import style from '../styles/principalPage.module.scss';
 
 class ButtonCategory extends React.Component {
   constructor() {
@@ -42,11 +43,14 @@ class ButtonCategory extends React.Component {
 
   render() {
     const { testId, strCategory } = this.props;
+    const { btnCategory } = style;
+
     return (
       <button
         type="button"
         data-testid={ testId }
         onClick={ () => this.searchByCategory(strCategory) }
+        className={ btnCategory }
       >
         { strCategory }
       </button>

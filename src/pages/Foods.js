@@ -34,6 +34,7 @@ class Foods extends React.Component {
   render() {
     const { meals } = this.props;
     const { searchByBar } = this.state;
+
     if (meals.length === 1 && searchByBar === true) {
       return <Redirect to={ `/foods/${meals[0].idMeal}` } />;
     }

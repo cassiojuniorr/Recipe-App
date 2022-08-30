@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
 import ButtonCategory from './ButtonCategory';
+import style from '../styles/principalPage.module.scss';
 
 class Recipes extends React.Component {
   clearSearchByCategory = () => {
@@ -23,46 +24,69 @@ class Recipes extends React.Component {
     const isDrink = drinks.length > 0;
     const recipesList = isDrink ? drinks : meals;
     const categoryList = isDrink ? categoryDrinks : categoryMeals;
+    const {
+      containerRecipes,
+      btnCategory,
+      containerCategoryBtn,
+      containerAll,
+      containerFoods,
+      wrapImg,
+      titileFood,
+      imgFood } = style;
 
     return (
-      <div className="recipes">
+      <div className={ containerRecipes }>
         <div>
-          { categoryList.map((category, index) => {
-            const { strCategory } = category;
-            return (
-              <ButtonCategory
-                key={ index }
-                title={ title }
-                testId={ `${strCategory}-category-filter` }
-                strCategory={ strCategory }
-                searchByCategoryOn={ searchByCategoryOn }
-              />
-            );
-          })}
-          <button
-            type="button"
-            data-testid="All-category-filter"
-            onClick={ this.clearSearchByCategory }
-          >
-            All
-          </button>
+          <div className={ containerCategoryBtn }>
+            { categoryList.map((category, index) => {
+              const { strCategory } = category;
+              return (
+                <ButtonCategory
+                  key={ index }
+                  title={ title }
+                  testId={ `${strCategory}-category-filter` }
+                  strCategory={ strCategory }
+                  searchByCategoryOn={ searchByCategoryOn }
+                />
+              );
+            })}
+          </div>
+          <div className={ containerAll }>
+            <button
+              type="button"
+              data-testid="All-category-filter"
+              onClick={ this.clearSearchByCategory }
+              className={ btnCategory }
+            >
+              All
+            </button>
+          </div>
         </div>
-        <div>
+
+        <div className={ containerFoods }>
           { recipesList.map((recipe, index) => {
             const recipeThumb = isDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
             const recipeName = isDrink ? recipe.strDrink : recipe.strMeal;
             const recipeLink = isDrink
               ? `/drinks/${recipe.idDrink}` : `/foods/${recipe.idMeal}`;
             return (
-              <div data-testid={ `${index}-recipe-card` } key={ index }>
+              <div
+                data-testid={ `${index}-recipe-card` }
+                key={ index }
+                className={ wrapImg }
+              >
                 <Link to={ recipeLink }>
-                  <h3 data-testid={ `${index}-card-name` }>{ recipeName }</h3>
+                  <h3
+                    data-testid={ `${index}-card-name` }
+                    className={ titileFood }
+                  >
+                    { recipeName }
+                  </h3>
                   <img
                     src={ recipeThumb }
                     alt={ recipeName }
                     data-testid={ `${index}-card-img` }
-                    width="200"
-                    height="200"
+                    className={ imgFood }
                   />
                 </Link>
               </div>

@@ -1,0 +1,57 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.containerRecipes {
+    margin-top: 50px;
+    margin-bottom: 50px;
+
+    .containerCategoryBtn {
+        @include center;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+        padding: 14px;
+    }
+
+    .btnCategory {
+        border: 1px solid $borderColor;
+        color: $secondary-color;
+        padding: 4px 14px;
+
+    }
+
+    .btnCategory:hover {
+        border: 1px solid rgb(251, 255, 0);
+        color: #ffb35d;
+        background-color: $primary-color;
+    }
+
+}
+
+.containerAll {
+    @include center;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.containerFoods {
+    @include center;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+    .wrapImg {
+        @include center;
+        flex-flow: row nowrap;
+        width: 40%;
+        text-align: center;
+        margin-bottom: 6px;
+        text-decoration: none;
+        .titileFood {
+            color: $secondary-color;
+            font-size: 26px;
+        }
+        .imgFood {
+            width: 200px;
+        }
+    }
+}

@@ -18,10 +18,10 @@ body {
     @include center;
     top: 0;
     position: fixed;
-    background-color: $brackGround;
+    background-color: $secondary-color;
     flex-flow: row wrap;
     width: 100%;
-    color: $primary-color;
+    color: black;
     justify-content: space-around;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
     .links:hover {
@@ -58,10 +58,12 @@ body {
     }
 
     .btnSearch {
-        border: 1px solid $text-color;
-        color: $brackGround;
+        border: 1px solid $secondary-color;
+        color: $primary-color;
         padding: 4px 14px;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.05), #FF8800);
     }
+
 }
 
 .searchInput:hover {
