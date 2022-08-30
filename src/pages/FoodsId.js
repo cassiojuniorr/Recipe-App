@@ -1,11 +1,12 @@
 import React from 'react';
+import RecipeDetails from '../components/RecipeDetails';
 
-function FoodsId() {
-  return (
-    <div>
-      Foods Id
-    </div>
-  );
+class FoodsId extends React.Component {
+  render() {
+    return (
+      <RecipeDetails pageActual="foods" { ...this.props } />
+    );
+  }
 }
 
 export default FoodsId;
