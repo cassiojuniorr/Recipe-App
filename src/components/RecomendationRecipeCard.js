@@ -4,25 +4,28 @@ import PropTypes from 'prop-types';
 
 class RecomendationRecipeCard extends React.Component {
   render() {
-    const { data, typeOfRequest } = this.props;
+    const { data, typeOfRequest, index } = this.props;
     const FOOD_TYPE = ['strMealThumb', 'strMeal', 'strCategory'];
-    const DRINK_TYPE = ['strDrinkThumb', 'strCategory', 'strAlcoholic'];
+    const DRINK_TYPE = ['strDrinkThumb', 'strDrink', ''];
     const TYPE = typeOfRequest === 'foods' ? DRINK_TYPE : FOOD_TYPE;
     return (
       <div>
-        <img src={ data[TYPE[0]] } alt={ data.strCategory } />
-        <h3>{ data[TYPE[1]] }</h3>
-        <h4>{ data[TYPE[2]] }</h4>
+        <img
+          src={ data[TYPE[0]] }
+          alt={ data.strCategory }
+          data-testid={ `${index}-recomendation-card` }
+          height="180"
+          width="180"
+        />
+        <h3 data-testid={ `${index}-recomendation-title` }>{ data[TYPE[1]] }</h3>
+        { typeOfRequest === 'foods' && <h4>{ data.strAlcoholic }</h4> }
       </div>
     );
   }
 }
 
-RecomendationRecipeCard.default = {
-
-};
-
 RecomendationRecipeCard.propTypes = {
+  index: PropTypes.number.isRequired,
   typeOfRequest: PropTypes.string.isRequired,
   data: PropTypes.shape({
     strCategory: PropTypes.string.isRequired,

@@ -75,3 +75,20 @@
   margin-bottom: 50px;
   margin-top: 50px;
 }
+
+.image {
+  height: 50px;
+  width: 50px;
+}
+
+.sroll {
+  display: flex;
+  flex-flow: row nowrap;
+  overflow-x: auto;
+}
+
+.starRecipe {
+  display: flex;
+  position: fixed;
+  bottom: 0px;
+}

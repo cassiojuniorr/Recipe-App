@@ -14,21 +14,17 @@ class RecipeDetails extends React.Component {
     this.state = {
       recipe: [],
       recomendedRecipes: [],
-      detailsID: '',
-      typeOfRequest: '',
       copyed: false,
       favoriteState: false,
     };
   }
 
   componentDidMount() {
-    this.getInfo();
+    this.initialize();
   }
 
   getLocalStorage = () => {
-    const { recipe, typeOfRequest } = this.state;
-    const TYPE = typeOfRequest === 'foods' ? 'idMeal' : 'idDrink';
-    const recipeId = recipe[TYPE];
+    const { match: { params: recipeId } } = this.props;
     const favoriteStore = JSON.parse(localStorage.getItem('favoriteRecipes')) !== null
       ? JSON.parse(localStorage.getItem('favoriteRecipes')) : [];
 
@@ -36,38 +32,32 @@ class RecipeDetails extends React.Component {
       === recipeId) });
   };
 
-  getInfo = () => {
-    const { history } = this.props;
-    const pathUrl = history.location.pathname;
-    const pathSpliced = pathUrl.split('/');
-    // array 0 '' 1 food/drink 2 id
-    this.setState((prevState) => (
-      { ...prevState, detailsID: pathSpliced[2], typeOfRequest: pathSpliced[1] }),
-    () => { this.initialize(); });
-  }
-
   initializeLocalStoreKey = (key) => {
-    localStorage.setItem(key, []);
+    if (key === 'doneRecipes') {
+      localStorage.setItem(key, JSON.stringify([]));
+    } else {
+      localStorage.setItem(key, JSON.stringify({}));
+    }
   }
 
   initialize = async () => {
-    const { detailsID, typeOfRequest } = this.state;
+    const { match: { params: recipeId }, pageActual } = this.props;
     const DONE_RECIPE = localStorage.getItem('doneRecipes');
     const IN_PROGRESS = localStorage.getItem('inProgressRecipes');
     if (DONE_RECIPE === null) this.initializeLocalStoreKey('doneRecipes');
     if (IN_PROGRESS === null) this.initializeLocalStoreKey('inProgressRecipes');
     const MAX_RECOMENDED_RECIPES = 6;
-    const foodEndpoint = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${detailsID}`;
-    const drinkEndpoint = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${detailsID}`;
+    const foodEndpoint = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId.recipeId}`;
+    const drinkEndpoint = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId.recipeId}`;
     const foodRecomended = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
     const drinkRecomended = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    const selectedTypeUrl = typeOfRequest === 'foods' ? foodEndpoint : drinkEndpoint;
-    const selectedTypeUrl2 = typeOfRequest === 'foods' ? drinkRecomended : foodRecomended;
+    const selectedTypeUrl = pageActual === 'foods' ? foodEndpoint : drinkEndpoint;
+    const selectedTypeUrl2 = pageActual === 'foods' ? drinkRecomended : foodRecomended;
     const newData = await this.fetchApi(selectedTypeUrl);
-    this.setState({ recipe: newData[typeOfRequest === 'foods' ? 'meals' : 'drinks'][0] });
+    this.setState({ recipe: newData[pageActual === 'foods' ? 'meals' : 'drinks'][0] });
     this.getLocalStorage();
     const recomendedLinks = await this.fetchApi(selectedTypeUrl2);
-    const recomendedLinksCuted = await recomendedLinks[typeOfRequest === 'foods'
+    const recomendedLinksCuted = await recomendedLinks[pageActual === 'foods'
       ? 'drinks' : 'meals'].slice(0, MAX_RECOMENDED_RECIPES);
     this.setState({ recomendedRecipes: await recomendedLinksCuted });
   }
@@ -76,49 +66,40 @@ class RecipeDetails extends React.Component {
     try {
       const data = await fetch(endpoint);
       const result = await data.json();
+      console.log(result);
       return result;
     } catch (error) {
       return error;
     }
   }
 
-  renderWithDrink = () => {
+  getIngredients = () => {
     const { recipe } = this.state;
     const INGREDIENTS_KEYS = Object.keys(recipe).filter((tag) => tag
       .includes('Ingredient'));
+    const MEASURE_KEYS = Object.keys(recipe).filter((tag) => tag
+      .includes('Measure'));
     const INGREDIENTS_VALUES = [];
-    INGREDIENTS_KEYS.forEach((key) => {
-      if (recipe[key] !== null) {
-        INGREDIENTS_VALUES.push(recipe[key]);
-      }
-    });
-    return INGREDIENTS_VALUES;
-  };
-
-  renderWithFood = () => {
-    const { recipe } = this.state;
-    const INGREDIENTS_KEYS = Object.keys(recipe).filter((tag) => tag
-      .includes('Ingredient'));
-    const INGREDIENTS_VALUES = [];
-    INGREDIENTS_KEYS.forEach((key) => {
-      if (recipe[key].length > 0) {
-        INGREDIENTS_VALUES.push(recipe[key]);
+    INGREDIENTS_KEYS.forEach((key, index) => {
+      if (recipe[key] !== '') {
+        INGREDIENTS_VALUES.push(`${recipe[key]} - ${recipe[MEASURE_KEYS[index]]}`);
       }
     });
     return INGREDIENTS_VALUES;
   };
 
   handleStartRecipe = () => {
-    const { history } = this.props;
-    const { typeOfRequest, recipe } = this.state;
+    const { history, pageActual } = this.props;
+    const { recipe } = this.state;
     const URL_FOOD = `/foods/${recipe.idMeal}/in-progress`;
     const URL_DRINK = `/drinks/${recipe.idDrink}/in-progress`;
-    history.push(typeOfRequest === 'foods' ? URL_FOOD : URL_DRINK);
+    history.push(pageActual === 'foods' ? URL_FOOD : URL_DRINK);
   };
 
   handleShare = () => {
-    const { recipe, typeOfRequest } = this.state;
-    if (typeOfRequest === 'foods') {
+    const { pageActual } = this.props;
+    const { recipe } = this.state;
+    if (pageActual === 'foods') {
       const urlId = recipe.idMeal;
       copy(`http://localhost:3000/foods/${urlId}`);
     } else {
@@ -138,63 +119,120 @@ class RecipeDetails extends React.Component {
   );
 
   makeFave = () => {
-    const { recipe, typeOfRequest, favoriteState } = this.state;
-    const urlId = typeOfRequest === 'foods' ? recipe.idMeal : recipe.idDrink;
-    toggleFavorite(recipe, urlId, typeOfRequest, favoriteState);
+    const { pageActual } = this.props;
+    const { recipe, favoriteState } = this.state;
+    const urlId = pageActual === 'foods' ? recipe.idMeal : recipe.idDrink;
+    toggleFavorite(recipe, urlId, pageActual, favoriteState);
     this.setState({ favoriteState: !favoriteState });
   };
 
-  renderRecipe = () => {
-    const { recipe, typeOfRequest, recomendedRecipes, copyed,
-      favoriteState } = this.state;
+  showStartButton = () => {
+    const { match: { params: recipeId } } = this.props;
+    const progressStore = JSON.parse(localStorage.getItem('doneRecipes')) !== null
+      ? JSON.parse(localStorage.getItem('doneRecipes'))
+      : [{}];
+    const bool = progressStore.some((ing) => recipeId === ing.id);
+
+    return !bool;
+  };
+
+  showNameButton = () => {
+    const { match: { params: recipeId } } = this.props;
+    const progressStore = JSON.parse(localStorage.getItem('inProgressRecipes')) !== null
+      ? JSON.parse(localStorage.getItem('inProgressRecipes'))
+      : { cocktails: {}, meals: {} };
+
+    if (Object.keys(progressStore.meals).includes(recipeId) === false) {
+      return 'Start Recipe';
+    }
+    if (Object.keys(progressStore.meals).includes(recipeId) === true) {
+      return 'Continue Recipe';
+    }
+    if (Object.keys(progressStore.cocktails).includes(recipeId) === false) {
+      return 'Start Recipe';
+    }
+    if (Object.keys(progressStore.cocktails).includes(recipeId) === true) {
+      return 'Continue Recipe';
+    }
+  };
+
+  // test = () => {
+  //   const { typeOfRequest } = this.state;
+  //   const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+  //   const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
+  //   const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+  //   const TYPE2 = typeOfRequest === 'foods' ? 'meals' : 'cocktails';
+  //   const LOCALSTORAGE = JSON.parse(localStorage
+  //     .getItem('inProgressRecipes'));
+  //   console.log(LOCALSTORAGE);
+  //   // console.log(LOCALSTORAGE[TYPE2]);
+  //   // console.log(LOCALSTORAGE[TYPE2][recipe[TYPE[2]]]);
+  // }
+
+  // renderStartRecipe = () => {
+  //   let response = '';
+  //   console.log('alo');
+  //   const { recipe } = this.state;
+  //   const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+  //   const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
+  //   const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+  //   const TYPE2 = typeOfRequest === 'foods' ? 'meals' : 'cocktails';
+  //   if (localStorage.getItem('inProgressRecipes') !== null) {
+  //     const RECIPE_INPROGRESS = JSON.parse(localStorage.getItem('inProgressRecipes'));
+  //     console.log(RECIPE_INPROGRESS[TYPE2][recipe[TYPE[2]]]);
+  //     console.log(RECIPE_INPROGRESS);
+  //     response = 'Continue Recipe';
+  //     //  ? 'Continue Recipe' : 'Start Recipe';
+  //   } else {
+  //     console.log('nulo');
+  //     response = 'Start Recipe';
+  //   }
+  //   return response;
+  // }
+
+  // renderStartRecipeBtn = () => {
+  //   const { recipe, typeOfRequest } = this.state;
+  //   const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
+  //   const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
+  //   const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+  //   const callReturn = () => (
+  //     <button
+  //       type="button"
+  //       data-testid="start-recipe-btn"
+  //       onClick={ this.handleStartRecipe }
+  //     >
+  //       { this.renderStartRecipe }
+  //     </button>
+  //   );
+  //   if (localStorage.getItem('doneRecipes') !== null
+  //     && !localStorage.getItem('doneRecipes').includes(recipe[TYPE[2]])) {
+  //     return callReturn;
+  //   }
+  //   if (localStorage.getItem('doneRecipes') === null) return callReturn;
+  // }
+
+  render() {
+    const { recipe, recomendedRecipes, copyed, favoriteState } = this.state;
+    const { pageActual } = this.props;
     const FOOD_TYPE = ['strMeal', 'strMealThumb', 'idMeal'];
     const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
-    const TYPE = typeOfRequest === 'foods' ? FOOD_TYPE : DRINK_TYPE;
-    if (Object.keys(recipe).length > 0) {
-      const INGREDIENTS_VALUES = typeOfRequest === 'foods' ? this.renderWithFood()
-        : this.renderWithDrink();
-      return (
-        <>
-          <div>
-            <h3 data-testid="recipe-title">{ recipe[TYPE[0]] }</h3>
-            <img
-              data-testid="recipe-photo"
-              src={ recipe[TYPE[1]] }
-              alt={ recipe[TYPE[0]] }
-            />
-            <p data-testid="recipe-category">{ recipe.strCategory }</p>
-            <p>Ingredients:</p>
-            <ul>
-              { INGREDIENTS_VALUES.map((ingredient, index) => (
-                <li
-                  key={ index }
-                  data-testid={ `${index}-ingredient-name-and-measure` }
-                >
-                  {ingredient}
-                </li>))}
-            </ul>
-            <p data-testid="instructions">
-              Instructions:
-              {' '}
-              { recipe.strInstructions }
-            </p>
-            { typeOfRequest === 'foods' && (
-              <video>
-                <track
-                  kind="captions"
-                  src={ recipe.strYoutube }
-                />
-              </video>
-            )}
-            <div>
-              { recomendedRecipes.map((RecRec, index) => (
-                <RecomendationRecipeCard
-                  key={ index }
-                  data={ RecRec }
-                  typeOfRequest={ typeOfRequest }
-                />)) }
-            </div>
-          </div>
+    const TYPE = pageActual === 'foods' ? FOOD_TYPE : DRINK_TYPE;
+    const INGREDIENTS_VALUES = this.getIngredients();
+    return (
+      <>
+        <div>
+          <h3 data-testid="recipe-title">{ recipe[TYPE[0]] }</h3>
+          <img
+            data-testid="recipe-photo"
+            height="180"
+            width="180"
+            src={ recipe[TYPE[1]] }
+            alt={ recipe[TYPE[0]] }
+          />
+          <p data-testid="recipe-category">
+            { pageActual === 'foods'
+              ? recipe.strCategory : `${recipe.strCategory} - Alcoholic` }
+          </p>
           <div>
             { copyed && (<h1>Link copied!</h1>)}
             <button
@@ -212,36 +250,68 @@ class RecipeDetails extends React.Component {
               { this.favoriteButton(favoriteState) }
             </button>
           </div>
-          { !localStorage.getItem('doneRecipes').includes(recipe[TYPE[2]]) && (
-            <button
-              type="button"
-              data-testid="start-recipe-btn"
-              onClick={ this.handleStartRecipe }
-            >
-              {
-                localStorage.getItem('inProgressRecipes').includes(recipe[TYPE[2]])
-                  ? 'Continue Recipe' : 'Start Recipe'
-              }
-            </button>
-          ) }
-        </>
-      );
-    }
-  };
-
-  render() {
-    const { recipe, recomendedRecipes } = this.state;
-    return (
-      ((Object.keys(recipe).length > 0 && Object.keys(recomendedRecipes).length > 0))
-        && this.renderRecipe()
+          <p>Ingredients:</p>
+          <ul>
+            { INGREDIENTS_VALUES.map((ingredient, index) => (
+              <li
+                key={ index }
+                data-testid={ `${index}-ingredient-name-and-measure` }
+              >
+                {ingredient}
+              </li>))}
+          </ul>
+          <p data-testid="instructions">
+            Instructions:
+            {' '}
+            { recipe.strInstructions }
+          </p>
+          { pageActual === 'foods' && (
+            <iframe
+              width="300"
+              height="300"
+              src={ `https://www.youtube.com/embed/${
+                recipe.strYoutube?.split('=')[1]
+              }` }
+              title={ recipe.strMeal }
+              data-testid="video"
+            />
+          )}
+          <div className="sroll">
+            { recomendedRecipes.map((RecRec, index) => (
+              <RecomendationRecipeCard
+                key={ index }
+                index={ index }
+                data={ RecRec }
+                typeOfRequest={ pageActual }
+              />)) }
+          </div>
+        </div>
+        { this.showStartButton() && (
+          <button
+            className="starRecipe"
+            position="fixed"
+            type="button"
+            data-testid="start-recipe-btn"
+            onClick={ this.handleStartRecipe }
+          >
+            { this.showNameButton() }
+          </button>
+        )}
+      </>
     );
   }
 }
 
 RecipeDetails.propTypes = {
+  pageActual: PropTypes.string.isRequired,
   history: PropTypes.shape({
     location: PropTypes.shape({ pathname: PropTypes.string }),
     push: PropTypes.func.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      recipeId: PropTypes.string.isRequired,
+    }),
   }).isRequired,
 };
 

@@ -4,7 +4,7 @@ import RecipeDetails from '../components/RecipeDetails';
 class FoodsId extends React.Component {
   render() {
     return (
-      <RecipeDetails { ...this.props } />
+      <RecipeDetails pageActual="foods" { ...this.props } />
     );
   }
 }
