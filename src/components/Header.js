@@ -24,7 +24,7 @@ class Header extends React.Component {
     const { title, searchByBarOn } = this.props;
     const { searchActivated } = this.state;
 
-    const { containerHeader, links } = style;
+    const { containerHeader, btnFav } = style;
     return (
       <div>
         <div className={ containerHeader }>
@@ -34,7 +34,6 @@ class Header extends React.Component {
               data-testid="profile-top-btn"
               src={ profileIcon }
               alt="profileIcon"
-              className={ links }
             />
           </Link>
           {
@@ -44,16 +43,17 @@ class Header extends React.Component {
                 <button
                   type="button"
                   onClick={ this.toggleSearchInput }
+                  className={ btnFav }
                 >
                   <img
                     data-testid="search-top-btn"
                     src={ searchIcon }
                     alt="searchIcon"
-                    className={ links }
                   />
                 </button>
               )
           }
+
         </div>
         { searchActivated && (
           <SearchBar

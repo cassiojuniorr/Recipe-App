@@ -8,15 +8,14 @@
     .containerCategoryBtn {
         @include center;
         flex-flow: row nowrap;
-        justify-content: space-around;
-        padding: 14px;
+        justify-content: space-evenly;
+        padding: 8px;
     }
 
     .btnCategory {
         border: 1px solid $borderColor;
         color: $secondary-color;
-        padding: 4px 14px;
-
+        padding: 2px;
     }
 
     .btnCategory:hover {
@@ -31,27 +30,27 @@
     @include center;
     flex-flow: row nowrap;
     justify-content: center;
-    margin-bottom: 6px;
 }
 
 .containerFoods {
     @include center;
     flex-flow: row wrap;
     justify-content: space-around;
+    padding: 10px;
 
     .wrapImg {
         @include center;
         flex-flow: row nowrap;
         width: 40%;
         text-align: center;
-        margin-bottom: 6px;
         text-decoration: none;
+        margin-left: 22px;
         .titileFood {
             color: $secondary-color;
-            font-size: 26px;
+            font-size: 16px;
         }
         .imgFood {
-            width: 200px;
+            width: 100px;
         }
     }
 }

@@ -9,11 +9,6 @@ body {
     color: $text-color;
 }
 
-.a {
-    opacity: 0.7;
-}
-
-
 .containerHeader {
     @include center;
     top: 0;
@@ -24,8 +19,10 @@ body {
     color: black;
     justify-content: space-around;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
-    .links:hover {
-        opacity: 1;
+    
+    .btnFav {
+        border: 0px;
+        background: none;
     }
 }
 
@@ -35,7 +32,7 @@ body {
     justify-content: center;
     width: 80%;
     margin-top: 60px;
-    margin-left: 60px;
+    margin-left: 30px;
 
     .searchInput {
         width: 50%;
