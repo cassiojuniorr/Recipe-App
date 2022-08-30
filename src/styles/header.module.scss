@@ -19,6 +19,7 @@ body {
     top: 0;
     position: fixed;
     background-color: $brackGround;
+    flex-flow: row wrap;
     width: 100%;
     color: $primary-color;
     justify-content: space-around;
@@ -28,45 +29,41 @@ body {
     }
 }
 
-.groupSearch {
-    @include center;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-}
 .containerSearch {
     @include center;
     flex-flow: column wrap;
     justify-content: center;
-    width: 70%;
+    width: 80%;
+    margin-top: 60px;
+    margin-left: 60px;
+
     .searchInput {
-        margin-top: 5px;
-        width: 60%;
+        width: 50%;
         font-family: inherit;
         letter-spacing: inherit;
-        color: currentcolor;
-        border: 0px;
         box-sizing: content-box;
-        height: 1.4375em;
-        padding: 10px 40px;
+        padding: 6px 20px;
         background-color: $text-color;
         border-radius: 8px;
+        border: 0px;
     }
+
     .containerRadiosSearch {
         @include center;
         flex-flow: row nowrap;
         justify-content: space-around;
-        .radiosSearch {
-            width: 90px;
-            display: block;
+        .radiosSearch:checked {
+            color: $brackGround;
         }
     }
 
     .btnSearch {
         border: 1px solid $text-color;
         color: $brackGround;
-        padding: 4px 20px;
+        padding: 4px 14px;
     }
 }
 
-
-
+.searchInput:hover {
+    border: 1px solid $brackGround;
+}

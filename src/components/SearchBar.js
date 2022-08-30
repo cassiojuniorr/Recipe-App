@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchRecipeMeals, fetchRecipeDrinks } from '../services/fetchApi';
+import style from '../styles/header.module.scss';
 
 function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual, searchByBarOn }) {
   const [state, setState] = useState({ inputSearch: '' });
@@ -52,67 +53,76 @@ function SearchBar({ makeSearchMeals, makeSearchDrinks, pageActual, searchByBarO
 
   const { inputSearch } = state;
   const { type } = typeState;
+  const {
+    containerSearch,
+    searchInput,
+    containerRadiosSearch,
+    radiosSearch,
+    btnSearch,
+  } = style;
 
   return (
-    <div>
-      <form>
-        <input
-          type="text"
-          data-testid="search-input"
-          value={ inputSearch }
-          onChange={ ({ target }) => setState({ ...state, inputSearch: target.value }) }
-        />
+    <form className={ containerSearch }>
+      <input
+        type="text"
+        data-testid="search-input"
+        className={ searchInput }
+        value={ inputSearch }
+        onChange={ ({ target }) => setState({ ...state, inputSearch: target.value }) }
+      />
 
-        <div>
+      <div className={ containerRadiosSearch }>
 
-          <label htmlFor="ingredient-search-radio">
-            <input
-              type="radio"
-              name="typeSearch"
-              data-testid="ingredient-search-radio"
-              id="ingredient-search-radio"
-              value="ingredient"
-              onChange={ setChanges }
-            />
-            Ingredient
-          </label>
+        <label htmlFor="ingredient-search-radio">
+          <input
+            type="radio"
+            name="typeSearch"
+            data-testid="ingredient-search-radio"
+            id="ingredient-search-radio"
+            value="ingredient"
+            onChange={ setChanges }
+            className={ radiosSearch }
+          />
+          Ingredient
+        </label>
 
-          <label htmlFor="name-search-radio">
-            <input
-              type="radio"
-              name="typeSearch"
-              data-testid="name-search-radio"
-              id="name-search-radio"
-              value="name"
-              onChange={ setChanges }
+        <label htmlFor="name-search-radio">
+          <input
+            type="radio"
+            name="typeSearch"
+            data-testid="name-search-radio"
+            id="name-search-radio"
+            value="name"
+            onChange={ setChanges }
+            className={ radiosSearch }
+          />
+          Name
+        </label>
 
-            />
-            Name
-          </label>
+        <label htmlFor="first-letter-search-radio">
+          <input
+            type="radio"
+            name="typeSearch"
+            data-testid="first-letter-search-radio"
+            id="first-letter-search-radio"
+            value="firstLetter"
+            onChange={ setChanges }
+            className={ radiosSearch }
+          />
+          First Letter
+        </label>
+      </div>
 
-          <label htmlFor="first-letter-search-radio">
-            <input
-              type="radio"
-              name="typeSearch"
-              data-testid="first-letter-search-radio"
-              id="first-letter-search-radio"
-              value="firstLetter"
-              onChange={ setChanges }
-            />
-            First Letter
-          </label>
-        </div>
-
-        <button
-          type="button"
-          data-testid="exec-search-btn"
-          disabled={ type.length === 0 || inputSearch.length === 0 }
-          onClick={ makeFetchApi }
-        >
-          SEARCH
-        </button>
-      </form>
-    </div>
+      <button
+        type="button"
+        data-testid="exec-search-btn"
+        disabled={ type.length === 0 || inputSearch.length === 0 }
+        onClick={ makeFetchApi }
+        className={ btnSearch }
+      >
+        SEARCH
+      </button>
+    </form>
   );
 }
 
