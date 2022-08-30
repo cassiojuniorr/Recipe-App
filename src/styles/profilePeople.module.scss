@@ -2,5 +2,24 @@
 @use 'mixins' as *;
 
 .containerProfile {
-    
+    margin-top: 60px;
+    margin-bottom: 60px;
+    padding: 10px;
+    text-align: center;
+    .emailProf {
+        color: $secondary-color;
+        font-size: 30px;
+    }
+
+    .wrapBtn {
+        @include center;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+        .btnPages {
+            border: 1px solid $borderColor;
+            color: $secondary-color;
+            padding: 2px;
+            margin-top: 10px;
+        }
+    }
 }
