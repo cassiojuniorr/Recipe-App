@@ -62,7 +62,6 @@ export const takeRecipe = async (type, id) => {
     ? `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
     : `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
   const data = await fetch(url).then((elm) => elm.json());
-  console.log(id);
   const response = (type === 'Meal')
     ? data.meals[0]
     : data.drinks[0];

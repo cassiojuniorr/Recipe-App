@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
-import style from '../styles/doneRecipes.module.scss';
+import '../styles/doneRecipes.css';
 
 const copy = require('clipboard-copy');
 
@@ -36,44 +35,48 @@ function DoneRecipes() {
   const searchByBarOn = () => {};
   searchByBarOn();
 
-  const { containerDone, imgDone } = style;
   return (
     <div>
       <Header title="Done Recipes" searchByBarOn={ searchByBarOn } />
-      <div className={ containerDone }>
-        <button
-          type="button"
-          data-testid="filter-by-all-btn"
-          name="allBtn"
-          onClick={ filterFunc }
-        >
-          All
-        </button>
-        <button
-          type="button"
-          data-testid="filter-by-food-btn"
-          name="foodBtn"
-          onClick={ filterFunc }
-        >
-          Food
-        </button>
-        <button
-          type="button"
-          data-testid="filter-by-drink-btn"
-          name="drinksBtn"
-          onClick={ filterFunc }
-        >
-          Drinks
-        </button>
+      <div className="containerDone">
+        <div className="buttons">
+          <button
+            className="btnCategory"
+            type="button"
+            data-testid="filter-by-all-btn"
+            name="allBtn"
+            onClick={ filterFunc }
+          >
+            All
+          </button>
+          <button
+            className="btnCategory"
+            type="button"
+            data-testid="filter-by-food-btn"
+            name="foodBtn"
+            onClick={ filterFunc }
+          >
+            Food
+          </button>
+          <button
+            className="btnCategory"
+            type="button"
+            data-testid="filter-by-drink-btn"
+            name="drinksBtn"
+            onClick={ filterFunc }
+          >
+            Drinks
+          </button>
+        </div>
         {
           recipeState[0] !== undefined
           && (
             recipeState.filter((recipe) => recipe.type !== typeState)
               .map((rcp, index) => (
-                <div key={ rcp.id }>
+                <div className="containerRecipe" key={ rcp.id }>
                   <Link to={ `/${rcp.type}s/${rcp.id}` }>
                     <img
-                      className={ imgDone }
+                      className="imgDone"
                       src={ rcp.image }
                       alt={ rcp.name }
                       data-testid={ `${index}-horizontal-image` }
@@ -96,8 +99,9 @@ function DoneRecipes() {
                   >
                     {rcp.doneDate}
                   </span>
-                  {copyState && <h1>Link copied!</h1>}
+                  {copyState && <h1 className="titileFood">Link copied!</h1>}
                   <button
+                    className="btnFav"
                     type="button"
                     onClick={ () => toggleShare(rcp.type, rcp.id) }
                   >

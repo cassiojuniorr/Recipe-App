@@ -13,7 +13,7 @@ class RecipeDetails extends React.Component {
   constructor() {
     super();
     this.state = {
-      recipe: [],
+      recipe: {},
       recomendedRecipes: [],
       copyed: false,
       favoriteState: false,

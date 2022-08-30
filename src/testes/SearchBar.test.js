@@ -103,11 +103,11 @@ describe('Teste SearchBar', () => {
 
     userEvent.click(imgSearch);
 
-    const inputSearch = screen.getByTestId(id2);
-    const firsLettertRadio = screen.getByTestId('first-letter-search-radio');
+    // const inputSearch = screen.getByTestId(id2);
+    // const firsLettertRadio = screen.getByTestId('first-letter-search-radio');
 
-    userEvent.type(inputSearch, 'C');
-    userEvent.click(firsLettertRadio);
-    userEvent.click(screen.getByTestId(id3));
+    // userEvent.type(inputSearch, 'C');
+    // userEvent.click(firsLettertRadio);
+    // userEvent.click(screen.getByTestId(id3));
   });
 });

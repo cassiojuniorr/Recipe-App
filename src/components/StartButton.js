@@ -4,9 +4,14 @@ import PropTypes from 'prop-types';
 class StartButton extends React.Component {
   handleStartRecipe = () => {
     const { history, pageActual, recipe } = this.props;
-    const URL_FOOD = `/foods/${recipe.idMeal}/in-progress`;
-    const URL_DRINK = `/drinks/${recipe.idDrink}/in-progress`;
-    history.push(pageActual === 'foods' ? URL_FOOD : URL_DRINK);
+    if (pageActual === 'foods') {
+      const URL_FOOD = `/foods/${recipe.idMeal}/in-progress`;
+      history.push(URL_FOOD);
+    }
+    if (pageActual === 'drinks') {
+      const URL_DRINK = `/drinks/${recipe.idDrink}/in-progress`;
+      history.push(URL_DRINK);
+    }
   };
 
   showStartButton = () => {
@@ -72,10 +77,7 @@ StartButton.propTypes = {
       recipeId: PropTypes.string.isRequired,
     }),
   }).isRequired,
-  recipe: PropTypes.shape({
-    idMeal: PropTypes.string.isRequired,
-    idDrink: PropTypes.string.isRequired,
-  }).isRequired,
+  recipe: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default StartButton;

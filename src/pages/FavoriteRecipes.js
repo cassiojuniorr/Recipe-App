@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import style from '../styles/favoriteRecipes.module.scss';
+import '../styles/doneRecipes.css';
 
 const copy = require('clipboard-copy');
 
@@ -49,44 +49,48 @@ function FavoriteRecipes() {
   const searchByBarOn = () => {};
   searchByBarOn();
 
-  const { containerFavorite } = style;
   return (
     <div>
       <Header title="Favorite Recipes" searchByBarOn={ searchByBarOn } />
-      <div className={ containerFavorite }>
-        <button
-          type="button"
-          data-testid="filter-by-all-btn"
-          name="allBtn"
-          onClick={ filterFunc }
-        >
-          All
-        </button>
+      <div className="containerDone">
+        <div className="buttons">
+          <button
+            className="btnCategory"
+            type="button"
+            data-testid="filter-by-all-btn"
+            name="allBtn"
+            onClick={ filterFunc }
+          >
+            All
+          </button>
 
-        <button
-          type="button"
-          data-testid="filter-by-food-btn"
-          name="foodBtn"
-          onClick={ filterFunc }
-        >
-          Food
-        </button>
+          <button
+            className="btnCategory"
+            type="button"
+            data-testid="filter-by-food-btn"
+            name="foodBtn"
+            onClick={ filterFunc }
+          >
+            Food
+          </button>
 
-        <button
-          type="button"
-          name="drinksBtn"
-          data-testid="filter-by-drink-btn"
-          onClick={ filterFunc }
-        >
-          Drinks
-        </button>
-
+          <button
+            className="btnCategory"
+            type="button"
+            name="drinksBtn"
+            data-testid="filter-by-drink-btn"
+            onClick={ filterFunc }
+          >
+            Drinks
+          </button>
+        </div>
         {
           favoriteRecipes.filter((recipe) => recipe.type !== filter)
             .map((recipe, index) => (
-              <div key={ recipe.id }>
+              <div className="containerRecipe" key={ recipe.id }>
                 <Link to={ `/${recipe.type}s/${recipe.id}` }>
                   <img
+                    className="imgDone"
                     src={ recipe.image }
                     alt={ recipe.name }
                     data-testid={ `${index}-horizontal-image` }
@@ -112,29 +116,32 @@ function FavoriteRecipes() {
                   </span>
                 </Link>
 
-                {copyState && <h1>Link copied!</h1>}
-                <button
-                  type="button"
-                  onClick={ () => toggleShare(recipe.type, recipe.id) }
-                >
-                  <img
-                    src={ shareIcon }
-                    alt="share-btn"
-                    data-testid={ `${index}-horizontal-share-btn` }
-                  />
-                </button>
-
-                <button
-                  type="button"
-                  name={ index }
-                  onClick={ () => makeFave(recipe.id) }
-                >
-                  <img
-                    src={ blackHeartIcon }
-                    alt="Favorite BTN"
-                    data-testid={ `${index}-horizontal-favorite-btn` }
-                  />
-                </button>
+                {copyState && <h1 className="titileFood">Link copied!</h1>}
+                <div className="btnFavShare">
+                  <button
+                    className="btnFav"
+                    type="button"
+                    onClick={ () => toggleShare(recipe.type, recipe.id) }
+                  >
+                    <img
+                      src={ shareIcon }
+                      alt="share-btn"
+                      data-testid={ `${index}-horizontal-share-btn` }
+                    />
+                  </button>
+                  <button
+                    className="btnFav"
+                    type="button"
+                    name={ index }
+                    onClick={ () => makeFave(recipe.id) }
+                  >
+                    <img
+                      src={ blackHeartIcon }
+                      alt="Favorite BTN"
+                      data-testid={ `${index}-horizontal-favorite-btn` }
+                    />
+                  </button>
+                </div>
               </div>
             ))
         }
