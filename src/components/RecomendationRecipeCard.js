@@ -34,9 +34,4 @@ RecomendationRecipeCard.propTypes = {
   }).isRequired,
 };
 
-/* const mapStateToProps = ({ details: { detailsID, typeOfRequest } }) => ({
-  detailsID,
-  typeOfRequest,
-}); */
-
 export default connect(null, null)(RecomendationRecipeCard);
