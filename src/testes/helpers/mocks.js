@@ -39,3 +39,28 @@ export const mockDrinks = [{
   strIngredient3: 'Ice',
   strMeasure1: '2 1/2 shots',
 }];
+
+export const mockFavorite = [
+  {
+    id: '52977',
+    type: 'food',
+    nationality: 'Turkish',
+    category: 'Side',
+    alcoholicOrNot: '',
+    name: 'Corba',
+    image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+    doneDate: '2022-08-27T07:33:48.720Z',
+    tags: ['Soup'],
+  },
+  {
+    id: '15997',
+    type: 'drink',
+    nationality: '',
+    category: 'Ordinary Drink',
+    alcoholicOrNot: 'Optional alcohol',
+    name: 'GG',
+    image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
+    doneDate: '022-08-29T02:02:50.823Z',
+    tags: [],
+  },
+];

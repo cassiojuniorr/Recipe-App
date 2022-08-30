@@ -11,15 +11,15 @@ Object.assign(navigator, {
   },
 });
 
-describe('Teste Done Recipes', () => {
+describe('Teste página de Favorite Recipes', () => {
   afterEach(() => localStorage.clear('doneRecipes'));
 
-  it('Renderiza na Tela', async () => {
+  it('Renderiza na tela', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
-    localStorage.setItem('doneRecipes', JSON.stringify(mockFavorite));
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavorite));
 
-    history.push('/done-recipes');
+    history.push('/favorite-recipes');
 
     expect(screen.getByTestId('filter-by-all-btn')).toBeDefined();
     expect(screen.getByTestId('filter-by-food-btn')).toBeDefined();
@@ -28,23 +28,23 @@ describe('Teste Done Recipes', () => {
     expect(await screen.findByTestId('1-horizontal-top-text')).toBeDefined();
     expect(screen.getByTestId('0-horizontal-name')).toBeDefined();
     expect(screen.getByTestId('1-horizontal-name')).toBeDefined();
-    expect(screen.getByTestId('0-horizontal-done-date')).toBeDefined();
-    expect(screen.getByTestId('1-horizontal-done-date')).toBeDefined();
     expect(screen.getByTestId('0-horizontal-share-btn')).toBeDefined();
     expect(screen.getByTestId('1-horizontal-share-btn')).toBeDefined();
-    expect(screen.getByTestId('0-Soup-horizontal-tag')).toBeDefined();
+    expect(screen.getByTestId('0-horizontal-favorite-btn')).toBeDefined();
+    expect(screen.getByTestId('1-horizontal-favorite-btn')).toBeDefined();
 
     userEvent.click(await screen.findByTestId('0-horizontal-image'));
+
     expect(history.location.pathname).toBe('/foods/52977');
   });
 
   it('Usando os filtros', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
-    localStorage.setItem('doneRecipes', JSON.stringify(mockFavorite));
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mockFavorite));
     jest.spyOn(navigator.clipboard, 'writeText');
 
-    history.push('/done-recipes');
+    history.push('/favorite-recipes');
 
     const AllBtn = screen.getByTestId('filter-by-all-btn');
     const FoodBtn = screen.getByTestId('filter-by-food-btn');
@@ -55,8 +55,6 @@ describe('Teste Done Recipes', () => {
     userEvent.click(FoodBtn);
 
     expect(screen.getByTestId('0-horizontal-name')).toBeDefined();
-    expect(screen.getByTestId('0-horizontal-done-date')).toBeDefined();
-    // referência https://www.tabnine.com/code/javascript/functions/dom-testing-library/queryByTestId
     expect(screen.queryByTestId('1-horizontal-top-text')).not.toBeTruthy();
 
     userEvent.click(shareBtnOne);
@@ -71,7 +69,8 @@ describe('Teste Done Recipes', () => {
     ).toHaveTextContent('Optional alcohol');
 
     userEvent.click(AllBtn);
-    userEvent.click(await screen.findByTestId('1-horizontal-image'));
+    userEvent.click(await screen.findByTestId('0-horizontal-favorite-btn'));
+    userEvent.click(await screen.findByTestId('0-horizontal-image'));
     expect(history.location.pathname).toBe('/drinks/15997');
   });
 });
