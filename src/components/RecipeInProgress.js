@@ -6,6 +6,7 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import '../styles/inProgress.css';
+import style from '../styles/inProgress.module.scss';
 import { takeRecipe } from '../services/fetchApi';
 import saveDoneRecipes from '../services/saveDoneRecipes';
 import toggleFavorite from '../services/toggleFavorite';
@@ -146,9 +147,10 @@ function RecipeInProgress({ pageActual, recipeId }) {
 
   const { copyed } = copyState;
   const { recipe } = recipeState;
+  const { containerInProgress, imgInProgress } = style;
 
   return (
-    <div className="containerInProgress">
+    <div className={ containerInProgress }>
       {
         recipe[0] !== undefined
         && (
@@ -166,7 +168,7 @@ function RecipeInProgress({ pageActual, recipeId }) {
               }
               alt="recipePhoto"
               data-testid="recipe-photo"
-              className="imgInProgress"
+              className={ imgInProgress }
             />
             { copyed && (<h1>Link copied!</h1>)}
             <button
