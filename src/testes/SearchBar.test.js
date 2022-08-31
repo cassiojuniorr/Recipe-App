@@ -19,16 +19,6 @@ const meals1 = {
   ],
 };
 
-const meals2 = {
-  meals: [
-    {
-      idMeal: '52977',
-      strMeal: 'Corba',
-      strMealThumb: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
-    },
-  ],
-};
-
 const id1 = 'search-top-btn';
 const id2 = 'search-input';
 const id3 = 'exec-search-btn';
@@ -89,25 +79,5 @@ describe('Teste SearchBar', () => {
     userEvent.type(inputSearch, 'asasdas');
     userEvent.click(firsLettertRadio);
     userEvent.click(screen.getByTestId(id3));
-  });
-  it('Teste redirecionamento da tela de bebidas', () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(meals2),
-    });
-
-    history.push('/foods');
-
-    const imgSearch = screen.getByTestId(id1);
-
-    userEvent.click(imgSearch);
-
-    // const inputSearch = screen.getByTestId(id2);
-    // const firsLettertRadio = screen.getByTestId('first-letter-search-radio');
-
-    // userEvent.type(inputSearch, 'C');
-    // userEvent.click(firsLettertRadio);
-    // userEvent.click(screen.getByTestId(id3));
   });
 });

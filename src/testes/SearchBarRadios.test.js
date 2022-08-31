@@ -19,16 +19,6 @@ const drinks1 = {
   ],
 };
 
-const drinks2 = {
-  drinks: [
-    {
-      idDrink: '15997',
-      strDrink: 'GG',
-      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
-    },
-  ],
-};
-
 const id1 = 'search-top-btn';
 const id2 = 'search-input';
 const id3 = 'exec-search-btn';
@@ -95,25 +85,5 @@ describe('Test SearchBarRadios', () => {
     userEvent.type(inputSearch, 'asdadaa');
     userEvent.click(nameRadio);
     userEvent.click(screen.getByTestId(id3));
-  });
-  it('Teste redirecionamento da tela de bebidas', () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(drinks2),
-    });
-
-    history.push('/drinks');
-
-    const imgSearch = screen.getByTestId(id1);
-
-    userEvent.click(imgSearch);
-
-    // const inputSearch = screen.getByTestId(id2);
-    // const nameRadio = screen.getByTestId('name-search-radio');
-
-    // userEvent.type(inputSearch, 'GG');
-    // userEvent.click(nameRadio);
-    // userEvent.click(screen.getByTestId(id3));
   });
 });

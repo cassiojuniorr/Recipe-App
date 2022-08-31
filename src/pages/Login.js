@@ -61,7 +61,7 @@ class Login extends React.Component {
       btnLogin } = style;
     return (
       <div className="meals">
-        <span className="logo">TRYBE!!</span>
+        <span className="logo">IRecipes!!</span>
         <object
           className="rocksGlass"
           type="image/svg+xml"
