@@ -32,7 +32,7 @@ class Recipes extends React.Component {
       wrapImg,
       titileFood,
       imgFood,
-      divCategory,
+      // divCategory,
       btnAll } = style;
 
     return (
