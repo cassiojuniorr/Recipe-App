@@ -83,7 +83,7 @@
 }
 
 .starRecipe {
-  bottom: 1px;
+  bottom: 0;
   display: flex;
   position: fixed;
 }
