@@ -3,54 +3,67 @@
 
 .containerRecipes {
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 70px;
 
     .containerCategoryBtn {
         @include center;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+        gap: 30px;
+        margin-top: 60px;
+        .divCategory {
+            margin-left: 6px;
+            .btnCategory {
+                border: 0;
+                background-color: $secondary-color;
+                padding: 12px 50px;
+                border-radius: 12px;
+                color: $primary-color;
+            }
+        }
+    }
+
+    
+
+    .containerAll {
+        @include center;
         flex-flow: row nowrap;
-        justify-content: space-evenly;
-        padding: 8px;
-    }
-
-    .btnCategory {
-        border: 1px solid $borderColor;
-        color: $secondary-color;
-        padding: 2px;
-    }
-
-    .btnCategory:hover {
-        border: 1px solid rgb(251, 255, 0);
-        color: #ffb35d;
-        background-color: $primary-color;
+        justify-content: center;
+        text-align: center;
+        margin-top: 12px;
+        .btnAll {
+            border: 0;
+            background-color: $secondary-color;
+            padding: 12px 50px;
+            border-radius: 12px;
+            color: $primary-color;
+        }
     }
 
 }
 
-.containerAll {
-    @include center;
-    flex-flow: row nowrap;
-    justify-content: center;
-}
 
 .containerFoods {
     @include center;
+    margin-top: 20px;
     flex-flow: row wrap;
     justify-content: space-around;
-    padding: 10px;
-
+    gap: 30px;
     .wrapImg {
         @include center;
-        flex-flow: row nowrap;
+        flex-flow: row wrap;
         width: 40%;
         text-align: center;
-        text-decoration: none;
-        margin-left: 22px;
+        box-shadow: 4px 8px 10px black;
+        border-radius: 12px;
         .titileFood {
             color: $secondary-color;
-            font-size: 16px;
+            font-size: 24px;
         }
         .imgFood {
-            width: 100px;
+            width: 144px;
+            border-style: hidden;
+            border-radius: 12px;
         }
     }
 }

@@ -26,13 +26,14 @@ class Recipes extends React.Component {
     const categoryList = isDrink ? categoryDrinks : categoryMeals;
     const {
       containerRecipes,
-      btnCategory,
       containerCategoryBtn,
       containerAll,
       containerFoods,
       wrapImg,
       titileFood,
-      imgFood } = style;
+      imgFood,
+      divCategory,
+      btnAll } = style;
 
     return (
       <div className={ containerRecipes }>
@@ -56,9 +57,9 @@ class Recipes extends React.Component {
               type="button"
               data-testid="All-category-filter"
               onClick={ this.clearSearchByCategory }
-              className={ btnCategory }
+              className={ btnAll }
             >
-              All
+              ALL
             </button>
           </div>
         </div>

@@ -43,17 +43,19 @@ class ButtonCategory extends React.Component {
 
   render() {
     const { testId, strCategory } = this.props;
-    const { btnCategory } = style;
+    const { btnCategory, divCategory } = style;
 
     return (
-      <button
-        type="button"
-        data-testid={ testId }
-        onClick={ () => this.searchByCategory(strCategory) }
-        className={ btnCategory }
-      >
-        { strCategory }
-      </button>
+      <div className={ divCategory }>
+        <button
+          type="button"
+          data-testid={ testId }
+          onClick={ () => this.searchByCategory(strCategory) }
+          className={ btnCategory }
+        >
+          { strCategory }
+        </button>
+      </div>
     );
   }
 }
