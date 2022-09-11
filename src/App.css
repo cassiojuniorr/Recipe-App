@@ -82,8 +82,15 @@
   overflow-x: auto;
 }
 
+
 .starRecipe {
   bottom: 0;
   display: flex;
   position: fixed;
+  background-color: #FF8800;
+  color: #FFF;
+  border: 0;
+  padding: 12px 30px;
+  border-radius: 12px;
+  margin-left: 100px;
 }

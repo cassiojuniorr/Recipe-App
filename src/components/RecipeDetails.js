@@ -6,6 +6,7 @@ import toggleFavorite from '../services/toggleFavorite';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import StartButton from './StartButton';
+import style from '../styles/detailsRecipe.module.scss';
 
 const copy = require('clipboard-copy');
 
@@ -112,61 +113,93 @@ class RecipeDetails extends React.Component {
     const DRINK_TYPE = ['strDrink', 'strDrinkThumb', 'idDrink'];
     const TYPE = pageActual === 'foods' ? FOOD_TYPE : DRINK_TYPE;
     const INGREDIENTS_VALUES = this.getIngredients();
+    const {
+      containerDetail,
+      titleDetail,
+      firstImg,
+      wrapfirstImg,
+      categoryDetail,
+      containerBtn,
+      btnShare,
+      btnFav,
+      containerCopy,
+      linkCopy,
+      containerIngredient,
+      ingredientDetail,
+      titleIngredient,
+      instructionDetails,
+      youtube } = style;
     return (
       <>
-        <div>
-          <h3 data-testid="recipe-title">{ recipe[TYPE[0]] }</h3>
-          <img
-            data-testid="recipe-photo"
-            height="180"
-            width="180"
-            src={ recipe[TYPE[1]] }
-            alt={ recipe[TYPE[0]] }
-          />
-          <p data-testid="recipe-category">
+        <div className={ containerDetail }>
+          <h3
+            data-testid="recipe-title"
+            className={ titleDetail }
+          >
+            { recipe[TYPE[0]] }
+          </h3>
+          <div className={ wrapfirstImg }>
+            <img
+              data-testid="recipe-photo"
+              height="180"
+              width="180"
+              className={ firstImg }
+              src={ recipe[TYPE[1]] }
+              alt={ recipe[TYPE[0]] }
+            />
+          </div>
+          <p data-testid="recipe-category" className={ categoryDetail }>
             { pageActual === 'foods'
               ? recipe.strCategory : `${recipe.strCategory} - ${recipe.strAlcoholic}` }
           </p>
-          <div>
-            { copyed && (<h3>Link copied!</h3>)}
+          <div className={ containerBtn }>
+            { copyed && (
+              <div className={ containerCopy }>
+                <h3 className={ linkCopy }>Link copied!</h3>
+              </div>
+            )}
             <button
               type="button"
               onClick={ this.handleShare }
+              className={ btnShare }
             >
               <img src={ shareIcon } alt="share recipe" data-testid="share-btn" />
             </button>
             <button
               type="button"
               onClick={ this.makeFave }
+              className={ btnFav }
             >
               { this.favoriteButton(favoriteState) }
             </button>
           </div>
-          <p>Ingredients:</p>
-          <ul>
+          <p className={ titleIngredient }>Ingredients:</p>
+          <ul className={ containerIngredient }>
             { INGREDIENTS_VALUES.map((ingredient, index) => (
               <li
                 key={ index }
                 data-testid={ `${index}-ingredient-name-and-measure` }
+                className={ ingredientDetail }
               >
                 {ingredient}
               </li>))}
           </ul>
-          <p data-testid="instructions">
+          <p data-testid="instructions" className={ instructionDetails }>
             Instructions:
-            {' '}
             { recipe.strInstructions }
           </p>
           { pageActual === 'foods' && (
-            <iframe
-              width="300"
-              height="300"
-              src={ `https://www.youtube.com/embed/${
-                recipe.strYoutube?.split('=')[1]
-              }` }
-              title={ recipe.strMeal }
-              data-testid="video"
-            />
+            <div className={ youtube }>
+              <iframe
+                width="300"
+                height="300"
+                src={ `https://www.youtube.com/embed/${
+                  recipe.strYoutube?.split('=')[1]
+                }` }
+                title={ recipe.strMeal }
+                data-testid="video"
+              />
+            </div>
           )}
           <div className="sroll">
             { recomendedRecipes.map((RecRec, index) => (
