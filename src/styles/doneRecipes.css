@@ -1,61 +1,68 @@
 .buttons {
   display: flex;
-  flex-flow: row;
-  justify-content: space-around;
-  margin-bottom: 10px;
-  padding: 10px;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  gap: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .btnCategory {
-  border: 1px solid rgb(255, 230, 0);
-  color: #f80;
-  padding: 4px 14px;
-}
-
-.btnCategory:hover {
-  background-color: white;
-  border: 1px solid rgb(251, 255, 0);
-  color: #ffb35d;
+  border: 0;
+  background-color: #ff8800;
+  padding: 12px 50px;
+  border-radius: 12px;
+  color: white;
 }
 
 .btnFav {
+  border: 0;
   background: none;
-  border: -1px;
 }
 
-.btnFavShare {
-  display: flex;
-  flex-flow: row;
-  justify-content: space-around;
-}
 
 .containerDone {
   color: black;
   display: flex;
   flex-flow: column;
   margin-top: 30px;
-  padding: 30px;
+  padding: 10px;
 }
 
 .containerRecipe {
   align-items: center;
+  border-radius: 8px;
+  box-shadow: 2px 6px 10px black;
   display: flex;
   flex-flow: column;
   justify-content: center;
   margin-bottom: 20px;
 }
 
+.cardRecipe {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.infRecipe {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+}
+
 .imgDone {
   border: 1px solid transparent;
-  border-color: #f18900;
-  border-radius: 44px 4px;
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: -1px -1px 15px #f18900;
-  width: 150px;
+  border-radius: 12px;
+  width: 200px;
 }
 
 .titileFood {
-  color: #f80;
-  font-size: 20px;
+  color: rgb(32, 32, 32);
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.infos {
+  margin-bottom: 4px;
 }

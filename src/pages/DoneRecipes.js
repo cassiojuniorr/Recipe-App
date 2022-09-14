@@ -74,51 +74,66 @@ function DoneRecipes() {
             recipeState.filter((recipe) => recipe.type !== typeState)
               .map((rcp, index) => (
                 <div className="containerRecipe" key={ rcp.id }>
-                  <Link to={ `/${rcp.type}s/${rcp.id}` }>
-                    <img
-                      className="imgDone"
-                      src={ rcp.image }
-                      alt={ rcp.name }
-                      data-testid={ `${index}-horizontal-image` }
-                    />
-                  </Link>
-                  <span data-testid={ `${index}-horizontal-top-text` }>
-                    {
-                      rcp.type === 'food'
-                        ? `${rcp.nationality} - ${rcp.category}`
-                        : `${rcp.alcoholicOrNot}`
-                    }
-                  </span>
                   <Link
                     to={ `/${rcp.type}s/${rcp.id}` }
                   >
-                    <span data-testid={ `${index}-horizontal-name` }>{rcp.name}</span>
-                  </Link>
-                  <span
-                    data-testid={ `${index}-horizontal-done-date` }
-                  >
-                    {rcp.doneDate}
-                  </span>
-                  {copyState && <h1 className="titileFood">Link copied!</h1>}
-                  <button
-                    className="btnFav"
-                    type="button"
-                    onClick={ () => toggleShare(rcp.type, rcp.id) }
-                  >
-                    <img
-                      src={ shareIcon }
-                      alt="share-btn"
-                      data-testid={ `${index}-horizontal-share-btn` }
-                    />
-                  </button>
-                  {rcp.tags.map((tag) => (
                     <span
-                      data-testid={ `${index}-${tag}-horizontal-tag` }
-                      key={ tag }
+                      data-testid={ `${index}-horizontal-name` }
+                      className="titileFood"
                     >
-                      {tag}
+                      {rcp.name}
                     </span>
-                  ))}
+                  </Link>
+
+                  <div className="cardRecipe">
+                    <Link to={ `/${rcp.type}s/${rcp.id}` }>
+                      <img
+                        className="imgDone"
+                        src={ rcp.image }
+                        alt={ rcp.name }
+                        data-testid={ `${index}-horizontal-image` }
+                      />
+                    </Link>
+                    <div className="infRecipe">
+                      <span
+                        data-testid={ `${index}-horizontal-top-text` }
+                        className="infos"
+                      >
+                        {
+                          rcp.type === 'food'
+                            ? `${rcp.nationality} - ${rcp.category}`
+                            : `${rcp.alcoholicOrNot}`
+                        }
+                      </span>
+                      <span
+                        data-testid={ `${index}-horizontal-done-date` }
+                        className="infos"
+                      >
+                        {rcp.doneDate}
+                      </span>
+                      {rcp.tags.map((tag) => (
+                        <span
+                          data-testid={ `${index}-${tag}-horizontal-tag` }
+                          className="infos"
+                          key={ tag }
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {copyState && <h1 className="titileFood">Link copied!</h1>}
+                      <button
+                        className="btnFav"
+                        type="button"
+                        onClick={ () => toggleShare(rcp.type, rcp.id) }
+                      >
+                        <img
+                          src={ shareIcon }
+                          alt="share-btn"
+                          data-testid={ `${index}-horizontal-share-btn` }
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))
           )
