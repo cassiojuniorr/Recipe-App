@@ -84,13 +84,13 @@
 
 
 .starRecipe {
-  bottom: 0;
-  display: flex;
-  position: fixed;
   background-color: #FF8800;
-  color: #FFF;
   border: 0;
-  padding: 12px 30px;
   border-radius: 12px;
+  bottom: 0;
+  color: #FFF;
+  display: flex;
+  padding: 12px 30px;
+  position: fixed;
   margin-left: 100px;
 }

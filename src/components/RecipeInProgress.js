@@ -139,7 +139,10 @@ function RecipeInProgress({ pageActual, recipeId }) {
     wrapIngredients,
     ingredients,
     intpIngredient,
-    btnFinish } = style;
+    btnFinish,
+    containerBtn,
+    containerCopy,
+    linkCopy } = style;
 
   return (
     <div>
@@ -165,8 +168,12 @@ function RecipeInProgress({ pageActual, recipeId }) {
               data-testid="recipe-photo"
               className={ imgInProgress }
             />
-            { copyed && (<h1 className={ titileFood }>Link copied!</h1>)}
-            <div>
+            <div className={ containerBtn }>
+              { copyed && (
+                <div className={ containerCopy }>
+                  <h3 className={ linkCopy }>Link copied!</h3>
+                </div>
+              )}
               <button
                 type="button"
                 onClick={ handleShare }
