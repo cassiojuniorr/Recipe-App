@@ -8,11 +8,11 @@
 }
 
 .btnCategory {
-  background-color: #ff8800;
+  background-color: #f80;
   border: 0;
   border-radius: 12px;
-  padding: 12px 50px;
   color: white;
+  padding: 12px 50px;
 }
 
 .btnFav {
