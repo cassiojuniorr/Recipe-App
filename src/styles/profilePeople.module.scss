@@ -8,18 +8,21 @@
     text-align: center;
     .emailProf {
         color: $secondary-color;
-        font-size: 20px;
+        font-size: 40px;
+        margin-bottom: 20px;
     }
 
     .wrapBtn {
         @include center;
-        flex-flow: row nowrap;
-        justify-content: space-around;
+        flex-flow: column;
+        justify-content: center;
         .btnPages {
-            border: 1px solid $borderColor;
-            color: $secondary-color;
-            padding: 2px;
-            margin-top: 10px;
+            border: 0;
+            background-color: $secondary-color;
+            padding: 12px 80px;
+            border-radius: 12px;
+            color: $primary-color;
+            margin-bottom: 20px;
         }
     }
 }
