@@ -40,6 +40,8 @@ Todos os arquivos se encontram na pasta src;
 
 - 2° Rode o comando npm install no seu terminal;
 
+- 3° Coloque o navegador em resolução de celular;
+
 ## Desenvolvedores: 🧑‍🤝‍🧑
 
 - Leo Araujo <a href="https://www.linkedin.com/in/leo-araujo-65748824b/" width="14px" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
