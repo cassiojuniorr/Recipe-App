@@ -23,10 +23,9 @@ O layout tem como foco dispositivos móveis, dessa forma todos os protótipos fo
 ## Tecnologias 👩‍💻
 
 <details>
+
 - React Redux (Context API and Hooks);
-
 - RTL;
-
 - CSS (Nesse projeto utilizamos SASS);
 </details>
 
@@ -35,7 +34,7 @@ Todos os arquivos se encontram na pasta src;
 
 ## Desenvolvedores: 🧑‍🤝‍🧑
 
-- Leo Araujo <a href="https://www.linkedin.com/in/leo-araujo-65748824b/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
+- Leo Araujo <a href="https://www.linkedin.com/in/leo-araujo-65748824b/" width="16px" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
 
 - Mael Sobrinho <a href="https://www.linkedin.com/in/mael-fernandes-8a3735227/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
 
