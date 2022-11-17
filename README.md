@@ -8,16 +8,30 @@ Nele será possível: ver, buscar, filtrar, favoritar e acompanhar o progresso d
 
 O layout tem como foco dispositivos móveis, dessa forma todos os protótipos foram desenvolvidos em telas menores.
 
-# Tecnologias 👩‍💻
+# Pages
+
+- Login Page;
+- Food and Drinks Page;
+- Recipes Details Page;
+- Recipes In Progress Page;
+- Done Recipes Page;
+- Favorite Recipes Page;
+- Profile Page;
+- Not Found Page;
+- Tests for all the pages;
+
+## Tecnologias 👩‍💻
 
 <details>
 - React Redux (Context API and Hooks);
+
 - RTL;
+
 - CSS (Nesse projeto utilizamos SASS);
 </details>
 
 ## Files: 📄 
-Todos os arquivos se encontram na pasta src
+Todos os arquivos se encontram na pasta src;
 
 ## Desenvolvedores: 🧑‍🤝‍🧑
 
