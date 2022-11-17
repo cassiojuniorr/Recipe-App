@@ -1,5 +1,7 @@
 # Recipe App
 
+## Sobre ❓
+
 Nesse projeto desenvolvemos um app de receitas, utilizando o que há de mais moderno dentro do ecossistema React: Hooks e Context API!
 
 Nele será possível: ver, buscar, filtrar, favoritar e acompanhar o progresso de preparação de receitas e drinks!
@@ -29,18 +31,18 @@ O layout tem como foco dispositivos móveis, dessa forma todos os protótipos fo
 - CSS (Nesse projeto utilizamos SASS);
 </details>
 
-## Como rodar o projeto
+## Files: 📄 
+Todos os arquivos se encontram na pasta src;
+
+## Como rodar o projeto:
 
 - 1°: Clone o repositorio, comando: (git clone git@github.com:cassiojuniorr/Recipe-App.git);
 
 - 2°: Rode o comando npm install no seu terminal;
 
-## Files: 📄 
-Todos os arquivos se encontram na pasta src;
-
 ## Desenvolvedores: 🧑‍🤝‍🧑
 
-- Leo Araujo <a href="https://www.linkedin.com/in/leo-araujo-65748824b/" width="16px" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
+- Leo Araujo <a href="https://www.linkedin.com/in/leo-araujo-65748824b/" width="14px" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
 
 - Mael Sobrinho <a href="https://www.linkedin.com/in/mael-fernandes-8a3735227/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
 
