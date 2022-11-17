@@ -29,6 +29,12 @@ O layout tem como foco dispositivos móveis, dessa forma todos os protótipos fo
 - CSS (Nesse projeto utilizamos SASS);
 </details>
 
+## Como rodar o projeto
+
+- 1°: Clone o repositorio, comando: (git clone git@github.com:cassiojuniorr/Recipe-App.git);
+
+- 2°: Rode o comando npm install no seu terminal;
+
 ## Files: 📄 
 Todos os arquivos se encontram na pasta src;
 
