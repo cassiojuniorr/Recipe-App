@@ -10,7 +10,7 @@ Nele será possível: ver, buscar, filtrar, favoritar e acompanhar o progresso d
 
 O layout tem como foco dispositivos móveis, dessa forma todos os protótipos foram desenvolvidos em telas menores.
 
-# Pages
+## Pages
 
 - Login Page;
 - Food and Drinks Page;
@@ -36,9 +36,9 @@ Todos os arquivos se encontram na pasta src;
 
 ## Como rodar o projeto:
 
-- 1°: Clone o repositorio, comando: (git clone git@github.com:cassiojuniorr/Recipe-App.git);
+- 1° Clone o repositorio, comando: (git clone git@github.com:cassiojuniorr/Recipe-App.git);
 
-- 2°: Rode o comando npm install no seu terminal;
+- 2° Rode o comando npm install no seu terminal;
 
 ## Desenvolvedores: 🧑‍🤝‍🧑
 
