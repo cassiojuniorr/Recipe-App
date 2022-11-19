@@ -44,7 +44,7 @@ Todos os arquivos se encontram na pasta src;
 
 ## Desenvolvedores: 🧑‍🤝‍🧑
 
-- Leo Araujo <a href="https://www.linkedin.com/in/leo-araujo-65748824b/" width="14px" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
+- Leo Araujo <a href="https://www.linkedin.com/in/leoaraujo30/" width="14px" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
 
 - Mael Sobrinho <a href="https://www.linkedin.com/in/mael-fernandes-8a3735227/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="profcassio" /></a>
 
